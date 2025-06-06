@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { EventService } from '../../core/event.service';
 import { PlaceService } from '../../core/place.service';
 import { Event } from '../../models/event.model';
-import { Place } from '../../models/place.model';
+import { PlaceDto } from '../../models/place.model';
 
 @Component({
   selector: 'app-home',
@@ -54,7 +54,7 @@ import { Place } from '../../models/place.model';
             @for (place of popularPlaces; track place.id) {
               <div class="bg-white p-4 rounded-lg shadow-md">
                 <h3 class="text-xl font-semibold">{{ place.name }}</h3>
-                <p class="text-gray-600">{{ place.category }} · {{ place.city }}</p>
+                <p class="text-gray-600">{{ place.category }} · {{ place.averageRating }}⭐</p>
                 <p class="mt-2">{{ place.description | slice:0:100 }}{{ place.description.length > 100 ? '...' : '' }}</p>
                 <a [routerLink]="['/places', place.id]" class="text-blue-600 hover:underline mt-2 inline-block">View details</a>
               </div>
@@ -70,7 +70,7 @@ import { Place } from '../../models/place.model';
 })
 export class HomeComponent implements OnInit {
   upcomingEvents: Event[] = [];
-  popularPlaces: Place[] = [];
+  popularPlaces: PlaceDto[] = [];
 
   constructor(
     private eventService: EventService,
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
   }
 
   private loadPopularPlaces(): void {
-    this.placeService.getPopularPlaces(3).subscribe({
+    this.placeService.getPopular(3).subscribe({
       next: (places) => {
         this.popularPlaces = places;
       },

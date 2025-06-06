@@ -24,14 +24,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/events/event-list/event-list.component').then(m => m.EventListComponent)
   },
   {
-    path: 'events/:id',
-    loadComponent: () => import('./pages/events/event-detail/event-detail.component').then(m => m.EventDetailComponent)
-  },
-  {
     path: 'events/create',
     loadComponent: () => import('./pages/events/event-create/event-create.component').then(m => m.EventCreateComponent),
     canActivate: [authGuard],
     data: { role: 'EVENT_CREATOR' }
+  },
+  {
+    path: 'events/:id',
+    loadComponent: () => import('./pages/events/event-detail/event-detail.component').then(m => m.EventDetailComponent)
   },
   {
     path: 'events/:id/edit',
@@ -44,14 +44,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/places/place-list/place-list.component').then(m => m.PlaceListComponent)
   },
   {
-    path: 'places/:id',
-    loadComponent: () => import('./pages/places/place-detail/place-detail.component').then(m => m.PlaceDetailComponent)
-  },
-  {
     path: 'places/create',
     loadComponent: () => import('./pages/places/place-create/place-create.component').then(m => m.PlaceCreateComponent),
     canActivate: [authGuard],
     data: { role: 'EVENT_CREATOR' }
+  },
+  {
+    path: 'places/:id',
+    loadComponent: () => import('./pages/places/place-detail/place-detail.component').then(m => m.PlaceDetailComponent)
   },
   {
     path: 'places/:id/edit',

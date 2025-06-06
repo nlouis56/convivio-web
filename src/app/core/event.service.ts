@@ -64,7 +64,6 @@ export class EventService {
     if (groupId) {
       params = params.set('groupId', groupId);
     }
-    
     return this.http.post<Event>(this.apiUrl, eventData, { params });
   }
 

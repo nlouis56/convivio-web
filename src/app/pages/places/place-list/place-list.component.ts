@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PlaceService } from '../../../core/place.service';
-import { Place } from '../../../models/place.model';
+import { PlaceDto } from '../../../models/place.model';
 import { AuthService } from '../../../core/auth.service';
 
 @Component({
@@ -33,8 +33,8 @@ import { AuthService } from '../../../core/auth.service';
       @if (places.length > 0) {
         @for (place of places; track place.id) {
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            @if (place.imageUrl) {
-              <img [src]="place.imageUrl" alt="{{ place.name }}" class="w-full h-48 object-cover">
+            @if (place.photoUrls.length > 0) {
+              <img [src]="place.photoUrls[0]" alt="{{ place.name }}" class="w-full h-48 object-cover">
             } @else {
               <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
                 <span class="text-gray-500">No image</span>
@@ -52,15 +52,11 @@ import { AuthService } from '../../../core/auth.service';
                   </div>
                 }
               </div>
-              <p class="text-gray-600 mb-2">{{ place.address }}, {{ place.city }}</p>
+              <p class="text-gray-600 mb-2">{{ place.address }}</p>
               <p class="mb-4">{{ place.description | slice:0:100 }}{{ place.description.length > 100 ? '...' : '' }}</p>
 
               <div class="flex justify-between items-center mt-4">
                 <a [routerLink]="['/places', place.id]" class="text-green-600 hover:underline">View details</a>
-
-                @if (place.website) {
-                  <a [href]="place.website" target="_blank" class="text-blue-600 hover:underline">Website</a>
-                }
               </div>
             </div>
           </div>
@@ -94,15 +90,15 @@ import { AuthService } from '../../../core/auth.service';
   styles: []
 })
 export class PlaceListComponent implements OnInit {
-  places: Place[] = [];
+  places: PlaceDto[] = [];
   isLoading = false;
   currentFilter = 'all';
   filters = [
-    { label: 'All Places', value: 'all' },
-    { label: 'Near Bordeaux', value: 'near-bordeaux' },
-    { label: 'Top Rated', value: 'top-rated' },
-    { label: 'Popular', value: 'popular' },
-    { label: 'Most Visited', value: 'most-visited' }
+    { label: 'All Places', value: 'all', access: "" },
+    { label: 'Top Rated', value: 'top-rated', access: ""  },
+    { label: 'Popular', value: 'popular', access: ""  },
+    { label: 'Most Visited', value: 'most-visited', access: ""  },
+    { label: 'Deactivated', value: 'deactivated', access: "ADMIN"  }
   ];
 
   constructor(
@@ -122,6 +118,10 @@ export class PlaceListComponent implements OnInit {
     return this.authService.hasRole('EVENT_CREATOR');
   }
 
+  get hasAdminRole(): boolean {
+    return this.authService.hasRole('ADMIN');
+  }
+
   applyFilter(filter: string): void {
     this.currentFilter = filter;
     this.loadPlaces();
@@ -132,20 +132,8 @@ export class PlaceListComponent implements OnInit {
     let request;
 
     switch (this.currentFilter) {
-      case 'near-bordeaux':
-        request = this.placeService.getPlacesNearBordeaux();
-        break;
-      case 'top-rated':
-        request = this.placeService.getTopRatedPlaces();
-        break;
-      case 'popular':
-        request = this.placeService.getPopularPlaces();
-        break;
-      case 'most-visited':
-        request = this.placeService.getMostVisitedPlaces();
-        break;
       default:
-        request = this.placeService.getAllPlaces();
+        request = this.placeService.getAll();
     }
 
     request.subscribe({

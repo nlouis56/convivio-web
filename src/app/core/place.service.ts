@@ -1,65 +1,68 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Place, PlaceCreateRequest } from '../models/place.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+import { PlaceDto } from '../models/place.model';
+
+@Injectable({ providedIn: 'root' })
 export class PlaceService {
-  private apiUrl = '/api/places';
+  private readonly baseUrl = `/api/places`;
 
   constructor(private http: HttpClient) {}
 
-  getAllPlaces(): Observable<Place[]> {
-    return this.http.get<Place[]>(this.apiUrl);
+  getAll(): Observable<PlaceDto[]> {
+    return this.http.get<PlaceDto[]>(this.baseUrl);
   }
 
-  getPlaceById(id: string): Observable<Place> {
-    return this.http.get<Place>(`${this.apiUrl}/${id}`);
+  getById(id: string): Observable<PlaceDto> {
+    return this.http.get<PlaceDto>(`${this.baseUrl}/${id}`);
   }
 
-  getPlacesByCategory(category: string): Observable<Place[]> {
-    return this.http.get<Place[]>(`${this.apiUrl}/category/${category}`);
+  getByCategory(category: string): Observable<PlaceDto[]> {
+    return this.http.get<PlaceDto[]>(`${this.baseUrl}/category/${category}`);
   }
 
-  getPlacesNearBordeaux(distance: number = 10.0): Observable<Place[]> {
+  getNearBordeaux(distance = 10): Observable<PlaceDto[]> {
     const params = new HttpParams().set('distance', distance.toString());
-    return this.http.get<Place[]>(`${this.apiUrl}/near/bordeaux`, { params });
+    return this.http.get<PlaceDto[]>(`${this.baseUrl}/near/bordeaux`, { params });
   }
 
-  getPlacesNearLocation(longitude: number, latitude: number, distance: number = 10.0): Observable<Place[]> {
+  getNearLocation(
+    lng: number,
+    lat: number,
+    distance = 10
+  ): Observable<PlaceDto[]> {
     const params = new HttpParams()
-      .set('longitude', longitude.toString())
-      .set('latitude', latitude.toString())
+      .set('longitude', lng.toString())
+      .set('latitude', lat.toString())
       .set('distance', distance.toString());
-    return this.http.get<Place[]>(`${this.apiUrl}/near`, { params });
+    return this.http.get<PlaceDto[]>(`${this.baseUrl}/near`, { params });
   }
 
-  getPopularPlaces(limit: number = 10): Observable<Place[]> {
+  getPopular(limit = 10): Observable<PlaceDto[]> {
     const params = new HttpParams().set('limit', limit.toString());
-    return this.http.get<Place[]>(`${this.apiUrl}/popular`, { params });
+    return this.http.get<PlaceDto[]>(`${this.baseUrl}/popular`, { params });
   }
 
-  getTopRatedPlaces(limit: number = 10): Observable<Place[]> {
+  getTopRated(limit = 10): Observable<PlaceDto[]> {
     const params = new HttpParams().set('limit', limit.toString());
-    return this.http.get<Place[]>(`${this.apiUrl}/top-rated`, { params });
+    return this.http.get<PlaceDto[]>(`${this.baseUrl}/top-rated`, { params });
   }
 
-  getMostVisitedPlaces(limit: number = 10): Observable<Place[]> {
+  getMostVisited(limit = 10): Observable<PlaceDto[]> {
     const params = new HttpParams().set('limit', limit.toString());
-    return this.http.get<Place[]>(`${this.apiUrl}/most-visited`, { params });
+    return this.http.get<PlaceDto[]>(`${this.baseUrl}/most-visited`, { params });
   }
 
-  createPlace(placeData: PlaceCreateRequest): Observable<Place> {
-    return this.http.post<Place>(this.apiUrl, placeData);
+  create(payload: PlaceDto): Observable<PlaceDto> {
+    return this.http.post<PlaceDto>(this.baseUrl, payload);
   }
 
-  updatePlace(id: string, placeData: Partial<PlaceCreateRequest>): Observable<Place> {
-    return this.http.put<Place>(`${this.apiUrl}/${id}`, placeData);
+  update(id: string, payload: Partial<PlaceDto>): Observable<PlaceDto> {
+    return this.http.put<PlaceDto>(`${this.baseUrl}/${id}`, payload);
   }
 
-  deletePlace(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
-} 
+}

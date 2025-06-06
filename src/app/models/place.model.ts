@@ -1,30 +1,15 @@
-export interface Place {
-  id: string;
+export interface PlaceDto {
+  id?: string;
   name: string;
   description: string;
   address: string;
-  city: string;
-  postalCode: string;
   category: string;
-  longitude: number;
-  latitude: number;
-  phoneNumber?: string;
-  website?: string;
-  imageUrl?: string;
+  photoUrls: string[];
+  amenities: string[];
   averageRating?: number;
+  reviewCount?: number;
   visitCount?: number;
-}
-
-export interface PlaceCreateRequest {
-  name: string;
-  description: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  category: string;
-  longitude: number;
-  latitude: number;
-  phoneNumber?: string;
-  website?: string;
-  imageUrl?: string;
+  location: number[];
+  createdAt?: string;
+  updatedAt?: string;
 }
