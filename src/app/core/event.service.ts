@@ -12,11 +12,11 @@ export class EventService {
   constructor(private http: HttpClient) {}
 
   getAllEvents(): Observable<Event[]> {
-    console.log('Fetching all events from:', this.apiUrl);
     const res = this.http.get<Event[]>(this.apiUrl);
     res.subscribe({
-      next: (events) => console.log('Events fetched successfully:', events),
-      error: (error) => console.error('Error fetching events:', error)
+      next: (events) => { return events; },
+      error: (error) => { console.error('Error fetching events:', error); },
+      complete: () => {/*success*/ }
     });
     return res;
   }

@@ -28,7 +28,6 @@ export class AuthService {
   login(request: UserLoginRequest): Observable<UserLoginResponse> {
     return this.http.post<UserLoginResponse>(`${this.apiUrl}/login`, request).pipe(
       tap(response => {
-        console.log('Login response:', response);
         if (this.isBrowser) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify({
