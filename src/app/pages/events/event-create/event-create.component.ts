@@ -139,15 +139,12 @@ export class EventCreateComponent {
       };
       this.eventService.createEvent(eventData, this.eventForm.value.place, "").subscribe({
         next: (response) => {
-          console.log('Event created successfully:', response);
           alert('Event created successfully!');
           this.eventService.publishEvent(response.id).subscribe({
-            next: () => {
-              console.log('Event published successfully');
-            },
+            next: () => { },
             error: (error) => {
               console.error('Error publishing event:', error);
-              alert('Event created but failed to publish. Please check the console for details.');
+              alert('Event created but failed to publish. Please check the console for details and contact an administrator if necessary.');
             }
           });
           this.router.navigate(['/events', response.id]);

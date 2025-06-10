@@ -196,7 +196,6 @@ export class PlaceCreateComponent {
       };
       this.placeService.create(placeData).subscribe({
         next: (place) => {
-          console.log('Place created successfully:', place);
           this.router.navigate(['/places', place.id]);
         },
         error: (err) => {

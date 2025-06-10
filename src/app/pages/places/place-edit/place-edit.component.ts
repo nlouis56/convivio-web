@@ -110,7 +110,6 @@ export class PlaceEditComponent {
   onDelete(): void {
     this.placeService.delete(this.placeId!).subscribe({
       next: () => {
-        console.log('Place deleted successfully');
         alert('Place deleted successfully!');
       }
       , error: (err) => {
@@ -148,14 +147,12 @@ export class PlaceEditComponent {
 
   onSubmit(): void {
     if (this.placeForm.valid) {
-      console.log('Form submitted:', this.placeForm.value);
       const updatedPlace: PlaceDto = {
         ...this.placeData,
         ...this.placeForm.value
       };
       this.placeService.update(this.placeId!, updatedPlace).subscribe({
         next: () => {
-          console.log('Place updated successfully');
           alert('Place updated successfully!');
         },
         error: (err) => {
