@@ -96,15 +96,39 @@ import { AuthService } from '../../../core/auth.service';
           </div>
         </div>
 
+
+
         <div class="flex items-center justify-between">
-          <button
+          <!-- Left: Update & Delete buttons -->
+          <div class="flex gap-2">
+            <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
             [disabled]="!eventEditForm.valid"
-          >
-            Update Event
-          </button>
-          <a routerLink="/events" class="text-blue-500 hover:underline">Cancel</a>
+            >
+              Update Event
+            </button>
+            <button
+              class="bg-gray-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              (click)="onDelete()"
+            >
+              Delete Event
+            </button>
+          </div>
+          <!-- Right: Validity checks & Cancel -->
+          <div class="flex flex-col items-end gap-1">
+            <span class="text-red-500" *ngIf="eventEditForm.invalid && eventEditForm.touched">
+              Please fill out all required fields correctly.
+            </span>
+            <span class="text-green-500" *ngIf="eventEditForm.valid && eventEditForm.touched">
+              Form is valid!
+            </span>
+            <span class="text-gray-500" *ngIf="eventEditForm.pristine">
+              No changes made yet.
+            </span>
+            <a routerLink="/events" class="text-blue-500 hover:underline">Cancel</a>
+          </div>
         </div>
       </form>
     </div>
@@ -145,12 +169,11 @@ export class EventEditComponent implements OnInit {
           console.error('Event not found for ID:', this.eventId);
           return;
         }
-        console.log('Event details fetched successfully:', event);
         this.event = event;
         this.event.participantCount = event.participants?.length || 0;
         this.refreshFormContents();
-      }
-      , error: (err) => {
+      },
+      error: (err) => {
         console.error('Error fetching event details:', err);
       }
     });
@@ -159,42 +182,49 @@ export class EventEditComponent implements OnInit {
   refreshFormContents(): void {
     if (this.event) {
       this.eventEditForm.patchValue({
-        title: this.event?.title || '',
-        description: this.event?.description || '',
-        place: this.event?.place.id || '',
-        maxParticipants: this.event?.maxParticipants || 10,
-        startTime: this.event?.startDateTime || '',
-        endTime: this.event?.endDateTime || ''
+        title: this.event.title || '',
+        description: this.event.description || '',
+        place: this.event.place.id || '',
+        maxParticipants: this.event.maxParticipants || 10,
+        startTime: this.event.startDateTime || '',
+        endTime: this.event.endDateTime || ''
       });
-      console.log('Form initialized with event data:', this.eventEditForm.value);
-    } else {
-      console.warn('No event data available to initialize the form.');
     }
   }
 
   onSubmit(): void {
-    if (this.eventEditForm.valid) {
-      console.log('Form submitted:', this.eventEditForm.value);
+    if (this.eventEditForm.valid && this.eventId) {
       const updatedEvent: EventUpdateRequest = {
-        id: this.eventId!,
+        id: this.eventId,
         title: this.eventEditForm.value.title,
         description: this.eventEditForm.value.description,
         maxParticipants: this.eventEditForm.value.maxParticipants,
         startDateTime: this.eventEditForm.value.startTime,
         endDateTime: this.eventEditForm.value.endTime
-      }
-      console.log('Updated event data:', updatedEvent);
+      };
       this.eventService.updateEvent(updatedEvent, this.eventEditForm.value.place).subscribe({
         next: (response) => {
-          console.log('Event updated successfully:', response);
-          this.eventEditForm.reset();
-          this.event = null;
-          this.eventId = null;
           alert('Event updated successfully!');
           this.router.navigate(['/events']);
-        }
-        , error: (err) => {
+        },
+        error: (err) => {
           console.error('Error updating event:', err);
+        }
+      });
+    }
+  }
+
+  onDelete(): void {
+    if (!this.eventId) return;
+    const confirmed = window.confirm('Are you sure you want to delete this event?');
+    if (confirmed) {
+      this.eventService.deleteEvent(this.eventId).subscribe({
+        next: () => {
+          alert('Event deleted successfully!');
+          this.router.navigate(['/events']);
+        },
+        error: (err) => {
+          console.error('Error deleting event:', err);
         }
       });
     }
