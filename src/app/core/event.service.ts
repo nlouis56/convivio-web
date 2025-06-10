@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Event, EventCreateRequest } from '../models/event.model';
+import { Event, EventCreateRequest, EventUpdateRequest } from '../models/event.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,13 @@ export class EventService {
   constructor(private http: HttpClient) {}
 
   getAllEvents(): Observable<Event[]> {
-    return this.http.get<Event[]>(this.apiUrl);
+    console.log('Fetching all events from:', this.apiUrl);
+    const res = this.http.get<Event[]>(this.apiUrl);
+    res.subscribe({
+      next: (events) => console.log('Events fetched successfully:', events),
+      error: (error) => console.error('Error fetching events:', error)
+    });
+    return res;
   }
 
   getEventById(id: string): Observable<Event> {
@@ -67,8 +73,9 @@ export class EventService {
     return this.http.post<Event>(this.apiUrl, eventData, { params });
   }
 
-  updateEvent(id: string, eventData: Partial<EventCreateRequest>): Observable<Event> {
-    return this.http.put<Event>(`${this.apiUrl}/${id}`, eventData);
+  updateEvent(eventData: Partial<EventUpdateRequest>, placeId: string): Observable<EventUpdateRequest> {
+    let params = new HttpParams().set('placeId', placeId);
+    return this.http.put<EventUpdateRequest>(`${this.apiUrl}/${eventData.id}`, eventData, { params });
   }
 
   publishEvent(id: string): Observable<Event> {
@@ -90,4 +97,4 @@ export class EventService {
   deleteEvent(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-} 
+}

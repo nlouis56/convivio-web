@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PlaceSelectorComponent } from '../../../components/places/place-selector.component';
+import { EventService } from '../../../core/event.service';
+import { Event, EventCreateRequest, EventUpdateRequest } from '../../../models/event.model';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-event-edit',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, PlaceSelectorComponent],
   template: `
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6">Edit Event</h1>
+      <h1 class="text-3xl font-bold mb-6">Edit {{event?.title}}</h1>
 
-      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded-lg p-6">
+      <form [formGroup]="eventEditForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded-lg p-6">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
             Event Title
@@ -23,6 +27,18 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
             formControlName="title"
             placeholder="Enter event title"
           >
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
+            Place
+          </label>
+
+          <app-place-selector
+            formControlName="place"
+            [defaultPlaceId]="event?.place"
+            label="Select a place"
+            helper="Choose the location for your event"
+          ></app-place-selector>
         </div>
 
         <div class="mb-4">
@@ -38,15 +54,57 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
           ></textarea>
         </div>
 
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Maximum number of participants
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="number"
+            formControlName="maxParticipants"
+            placeholder="Enter maximum number of participants"
+          >
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Dates and times
+          </label>
+          <div class="flex items-center mb-2">
+            <label class="text-gray-700 text-sm font-medium mr-3 w-16" for="startTime">
+              Start:
+            </label>
+            <input
+              class="shadow appearance-none border rounded flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="startTime"
+              type="datetime-local"
+              formControlName="startTime"
+              placeholder="Select start date and time"
+            >
+          </div>
+          <div class="flex items-center">
+            <label class="text-gray-700 text-sm font-medium mr-3 w-16" for="endTime">
+              End:
+            </label>
+            <input
+              class="shadow appearance-none border rounded flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="endTime"
+              type="datetime-local"
+              formControlName="endTime"
+              placeholder="Select end date and time"
+            >
+          </div>
+        </div>
+
         <div class="flex items-center justify-between">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
-            [disabled]="!eventForm.valid"
+            [disabled]="!eventEditForm.valid"
           >
             Update Event
           </button>
-          <a [routerLink]="['/events', eventId]" class="text-blue-500 hover:underline">Cancel</a>
+          <a routerLink="/events" class="text-blue-500 hover:underline">Cancel</a>
         </div>
       </form>
     </div>
@@ -54,29 +112,91 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
   styles: []
 })
 export class EventEditComponent implements OnInit {
-  eventForm: FormGroup;
+  eventEditForm: FormGroup;
   eventId: string | null = null;
+  event: Event | null = null;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
-    this.eventForm = this.fb.group({
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private eventService: EventService,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.eventEditForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]]
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      place: ['', Validators.required],
+      maxParticipants: [10, [Validators.required, Validators.min(1)]],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.eventId = this.route.snapshot.paramMap.get('id');
-    // Here you would fetch the event data and patch form
-    this.eventForm.patchValue({
-      title: 'Sample Event Title',
-      description: 'This is a sample event description for editing purposes.'
+    if (!this.eventId) {
+      console.error('Event ID is missing in the route parameters.');
+      return;
+    }
+    this.eventService.getEventById(this.eventId!).subscribe({
+      next: (event) => {
+        if (!event) {
+          console.error('Event not found for ID:', this.eventId);
+          return;
+        }
+        console.log('Event details fetched successfully:', event);
+        this.event = event;
+        this.event.participantCount = event.participants?.length || 0;
+        this.refreshFormContents();
+      }
+      , error: (err) => {
+        console.error('Error fetching event details:', err);
+      }
     });
   }
 
+  refreshFormContents(): void {
+    if (this.event) {
+      this.eventEditForm.patchValue({
+        title: this.event?.title || '',
+        description: this.event?.description || '',
+        place: this.event?.place.id || '',
+        maxParticipants: this.event?.maxParticipants || 10,
+        startTime: this.event?.startDateTime || '',
+        endTime: this.event?.endDateTime || ''
+      });
+      console.log('Form initialized with event data:', this.eventEditForm.value);
+    } else {
+      console.warn('No event data available to initialize the form.');
+    }
+  }
+
   onSubmit(): void {
-    if (this.eventForm.valid) {
-      console.log('Form submitted:', this.eventForm.value);
-      // Update service call would go here
+    if (this.eventEditForm.valid) {
+      console.log('Form submitted:', this.eventEditForm.value);
+      const updatedEvent: EventUpdateRequest = {
+        id: this.eventId!,
+        title: this.eventEditForm.value.title,
+        description: this.eventEditForm.value.description,
+        maxParticipants: this.eventEditForm.value.maxParticipants,
+        startDateTime: this.eventEditForm.value.startTime,
+        endDateTime: this.eventEditForm.value.endTime
+      }
+      console.log('Updated event data:', updatedEvent);
+      this.eventService.updateEvent(updatedEvent, this.eventEditForm.value.place).subscribe({
+        next: (response) => {
+          console.log('Event updated successfully:', response);
+          this.eventEditForm.reset();
+          this.event = null;
+          this.eventId = null;
+          alert('Event updated successfully!');
+          this.router.navigate(['/events']);
+        }
+        , error: (err) => {
+          console.error('Error updating event:', err);
+        }
+      });
     }
   }
 }

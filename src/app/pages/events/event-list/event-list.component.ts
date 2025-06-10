@@ -48,7 +48,7 @@ import { AuthService } from '../../../core/auth.service';
 
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm text-gray-600">
-                  {{ event.currentParticipants || 0 }}/{{ event.maxParticipants }} participants
+                  {{ event.participantCount || 0 }}/{{ event.maxParticipants }} participants
                 </span>
                 @if (event.place?.name) {
                   <span class="text-sm text-gray-600">{{ event.place.name }}</span>
@@ -162,6 +162,7 @@ export class EventListComponent implements OnInit {
       next: (events) => {
         this.events = events;
         this.isLoading = false;
+        console.log('Events loaded successfully', this.events);
       },
       error: (error) => {
         console.error('Error loading events', error);
@@ -188,7 +189,7 @@ export class EventListComponent implements OnInit {
   }
 
   isEventFull(event: Event): boolean {
-    return !!event.currentParticipants && event.currentParticipants >= event.maxParticipants;
+    return !!event.participantCount && event.participantCount >= event.maxParticipants;
   }
 
   formatDate(dateString: string): string {

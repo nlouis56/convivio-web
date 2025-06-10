@@ -5,7 +5,8 @@ export interface Event {
   startDateTime: string;
   endDateTime: string;
   maxParticipants: number;
-  currentParticipants?: number;
+  participants?: any[];
+  participantCount?: number;
   published: boolean;
   imageUrl?: string;
   place?: any;
@@ -21,4 +22,15 @@ export interface EventCreateRequest {
   maxParticipants: number;
   published: boolean;
   imageUrl?: string;
+}
+
+export interface EventUpdateRequest {
+  id: string;
+  title?: string;
+  description?: string;
+  place?: string;
+  startDateTime?: string;
+  endDateTime?: string;
+  maxParticipants?: number;
+  published?: boolean;
 }

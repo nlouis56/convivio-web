@@ -141,7 +141,7 @@ import { Event } from '../../models/event.model';
                     <div class="border border-gray-200 rounded-lg p-4">
                       <h3 class="text-lg font-medium mb-2">{{ event.title }}</h3>
                       <p class="text-gray-600 mb-1">{{ formatDate(event.startDateTime) }}</p>
-                      <p class="text-sm text-gray-500">{{ event.currentParticipants || 0 }}/{{ event.maxParticipants }} participants</p>
+                      <p class="text-sm text-gray-500">{{ event.participantCount || 0 }}/{{ event.maxParticipants }} participants</p>
                       <div class="flex justify-between mt-3">
                         <a [routerLink]="['/events', event.id]" class="text-blue-600 hover:underline">View details</a>
                         <a [routerLink]="['/events', event.id, 'edit']" class="text-green-600 hover:underline">Edit</a>
