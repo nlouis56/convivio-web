@@ -73,16 +73,17 @@ import { AuthService } from '../../../core/auth.service';
               </div>
 
               <div class="flex justify-between items-center mt-4">
-                <a [routerLink]="['/events', event.id]"
-                    class="text-blue-600 hover:underline">
+                <button
+                  (click)="viewEventDetails(event.id)"
+                  class="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                   View details
-                </a>
+                </button>
 
                 <button
                   *ngIf="isLoggedIn"
                   (click)="joinEvent(event.id)"
                   [disabled]="isEventFull(event)"
-                  class="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {{ isEventFull(event) ? 'Full' : 'Join' }}
                 </button>
@@ -96,20 +97,22 @@ import { AuthService } from '../../../core/auth.service';
     <ng-template #noEventsTpl>
       <div class="col-span-full text-center py-10">
         <p class="text-gray-500 mb-4">No events found</p>
-        <a *ngIf="isLoggedIn && hasCreatorRole"
-            routerLink="/events/create"
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <button
+          *ngIf="isLoggedIn && hasCreatorRole"
+          (click)="navigateToCreate()"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
           Create an Event
-        </a>
+        </button>
       </div>
     </ng-template>
 
     <ng-container *ngIf="isLoggedIn && hasCreatorRole">
       <div class="fixed bottom-8 right-8">
-        <a routerLink="/events/create"
-            class="flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700">
+        <button
+          (click)="navigateToCreate()"
+          class="flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700">
           <span class="text-2xl">+</span>
-        </a>
+        </button>
       </div>
     </ng-container>
   `,
@@ -183,6 +186,15 @@ export class EventListComponent implements OnInit {
       next: () => this.loadEvents(),
       error: err => console.error('Error joining event', err)
     });
+  }
+
+  viewEventDetails(eventId: string): void {
+    // Navigate to event details
+    window.location.href = `/events/${eventId}`;
+  }
+
+  navigateToCreate(): void {
+    window.location.href = '/events/create';
   }
 
   isEventFull(event: Event): boolean {

@@ -75,7 +75,7 @@ import { AuthService } from '../../../core/auth.service';
         <div *ngIf="isLoggedIn && hasCreatorRole" class="fixed bottom-8 right-8">
           <a
             [routerLink]="['/events', eventId, 'edit']"
-            class="flex items-center justify-center w-14 h-14 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700"
+            class="flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700"
           >
             <span class="text-2xl">✏️</span>
           </a>

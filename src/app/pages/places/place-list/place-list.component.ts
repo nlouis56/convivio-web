@@ -72,10 +72,10 @@ import { AuthService } from '../../../core/auth.service';
                 {{ place.description.length > 100 ? '…' : '' }}
               </p>
               <div class="flex justify-between items-center mt-4">
-                <a [routerLink]="['/places', place.id]"
-                    class="text-green-600 hover:underline">
+                <button [routerLink]="['/places', place.id]"
+                        class="px-4 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                   View details
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -89,20 +89,20 @@ import { AuthService } from '../../../core/auth.service';
     <ng-template #noPlacesTpl>
       <div class="col-span-full text-center py-10">
         <p class="text-gray-500 mb-4">No places found</p>
-        <a *ngIf="isLoggedIn && hasCreatorRole"
-            routerLink="/places/create"
-            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+        <button *ngIf="isLoggedIn && hasCreatorRole"
+                [routerLink]="['/places/create']"
+                class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
           Add a Place
-        </a>
+        </button>
       </div>
     </ng-template>
 
     <ng-container *ngIf="isLoggedIn && hasCreatorRole">
       <div class="fixed bottom-8 right-8">
-        <a routerLink="/places/create"
-            class="flex items-center justify-center w-14 h-14 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700">
+        <button [routerLink]="['/places/create']"
+                class="flex items-center justify-center w-14 h-14 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-colors">
           <span class="text-2xl">+</span>
-        </a>
+        </button>
       </div>
     </ng-container>
   `,
