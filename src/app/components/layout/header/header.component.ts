@@ -22,9 +22,6 @@ import { AuthService } from '../../../core/auth.service';
               <li><a routerLink="/login" class="hover:text-blue-200">Login</a></li>
               <li><a routerLink="/register" class="hover:text-blue-200">Register</a></li>
             } @else {
-              @if (authService.hasRole('EVENT_CREATOR')) {
-                <li><a routerLink="/events/create" class="hover:text-blue-200">Create Event</a></li>
-              }
               <li><a routerLink="/profile" class="hover:text-blue-200">Profile</a></li>
               <li><button (click)="logout()" class="hover:text-blue-200">Logout</button></li>
             }
