@@ -39,6 +39,13 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
 
             <div class="mb-4">
               <strong>Address:</strong> {{ placeDTO.address }}
+              <button
+                class="ml-2 text-blue-600 hover:underline"
+                (click)="openGmaps(placeDTO)"
+                *ngIf="placeDTO"
+              >
+                View on Google Maps
+              </button>
             </div>
 
             <div class="mb-4">
@@ -166,5 +173,13 @@ export class PlaceDetailComponent implements OnInit {
 
   get hasCreatorRole(): boolean {
     return this.authService.hasRole('EVENT_CREATOR');
+  }
+
+  openGmaps(place: PlaceDto): void {
+    if (place && place.address) {
+      const address = encodeURIComponent(place.address);
+      const url = `https://www.google.com/maps/search/?api=1&query=${address}`;
+      window.open(url, '_blank');
+    }
   }
 }
