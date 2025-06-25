@@ -4,7 +4,7 @@ export interface Review {
   comment: string;
   createdAt: string;
   updatedAt: string;
-  author?: any;
+  user?: any;
   place?: any;
   event?: any;
 }

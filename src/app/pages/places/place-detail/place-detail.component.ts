@@ -5,6 +5,7 @@ import { PlaceDto } from '../../../models/place.model';
 import { PlaceService } from '../../../core/place.service';
 import { AuthService } from '../../../core/auth.service';
 import { MapDisplayComponent } from '../../../components/maps/map-display.component';
+import { ReviewListComponent } from '../../../components/reviews/review-list.component';
 import { TranslatePipe } from "../../../core/translate.pipe";
 
 
@@ -15,6 +16,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
     CommonModule,
     RouterModule,
     MapDisplayComponent,
+    ReviewListComponent,
     TranslatePipe
 ],
   template: `
@@ -87,32 +89,12 @@ import { TranslatePipe } from "../../../core/translate.pipe";
           ></app-map-display>
       </div>
 
-      <div
-        class="bg-white shadow-md rounded-lg p-6 mt-8"
-        *ngIf="placeDTO; else noPlace"
-      >
-        <h2 class="text-2xl font-semibold mb-4">{{'misc.reviews' | translate}}</h2>
-
-        <ng-container
-
-        >
-          <div
-
-            class="border-b border-gray-200 pb-4 mb-4 last:border-none last:mb-0"
-          >
-            <p class="font-medium">
-              Username
-              <span class="text-sm text-gray-500 ml-2">
-                rating/5
-              </span>
-            </p>
-            <p class="text-gray-700">comment</p>
-          </div>
-        </ng-container>
-
-        <ng-template #noReviews>
-          <p class="text-gray-500">{{'misc.no-data' | translate}}</p>
-        </ng-template>
+      <!-- Reviews Section -->
+      <div class="mt-8" *ngIf="placeDTO; else noPlace">
+        <app-review-list 
+          resourceType="place" 
+          [resourceId]="placeId">
+        </app-review-list>
       </div>
 
       <ng-template #noPlace>

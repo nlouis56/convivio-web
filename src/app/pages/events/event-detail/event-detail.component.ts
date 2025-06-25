@@ -4,13 +4,14 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { EventService } from '../../../core/event.service';
 import { Event } from '../../../models/event.model';
 import { MapDisplayComponent } from '../../../components/maps/map-display.component';
+import { ReviewListComponent } from '../../../components/reviews/review-list.component';
 import { AuthService } from '../../../core/auth.service';
 import { TranslatePipe } from "../../../core/translate.pipe";
 
 @Component({
   selector: 'app-event-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, MapDisplayComponent, TranslatePipe],
+  imports: [CommonModule, RouterModule, MapDisplayComponent, ReviewListComponent, TranslatePipe],
   template: `
     <!-- Loading state -->
     <ng-container *ngIf="isLoading; else loadedTpl">
@@ -65,6 +66,14 @@ import { TranslatePipe } from "../../../core/translate.pipe";
             [lat]="eventDetails.place.location?.[0] || 0"
             [lng]="eventDetails.place.location?.[1] || 0"
           ></app-map-display>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="mt-8">
+          <app-review-list 
+            resourceType="event" 
+            [resourceId]="eventId">
+          </app-review-list>
         </div>
 
         <div class="mt-6">
