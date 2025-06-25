@@ -36,7 +36,7 @@ import { OpenStreetMapProvider } from 'leaflet-geosearch';
 export class MapPickerComponent implements AfterViewInit {
   @Input() lat = 44.8673;
   @Input() lng = -0.5755; // Default: Bordeaux, France
-  @Input() zoom = 10;
+  @Input() zoom = 13;
 
   /** Emits when a location is picked */
   @Output() locationSelected = new EventEmitter<{

@@ -23,7 +23,7 @@ import type * as Leaflet from 'leaflet';
 export class MapDisplayComponent implements AfterViewInit, OnChanges {
   @Input() lat  = 44.8673;
   @Input() lng  = -0.5755; // default: Bordeaux
-  @Input() zoom = 10;
+  @Input() zoom = 13;
 
   @ViewChild('map', { static: true })
   private mapContainer!: ElementRef<HTMLDivElement>;
