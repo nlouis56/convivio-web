@@ -5,15 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { EventService } from '../../../core/event.service';
 import { Event } from '../../../models/event.model';
 import { AuthService } from '../../../core/auth.service';
+import { TranslatePipe } from '../../../core/translate.pipe';
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslatePipe],
   template: `
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">Events</h1>
-      <p class="text-gray-600">Discover and join exciting events around you</p>
+      <h1 class="text-3xl font-bold mb-2">{{'nav.events' | translate}}</h1>
+      <p class="text-gray-600">{{ 'events.description' | translate }}</p>
     </div>
 
     <div class="mb-8 flex flex-wrap gap-4">
@@ -28,14 +29,14 @@ import { AuthService } from '../../../core/auth.service';
         [class.text-white]="currentFilter === filter.value"
         [class.bg-gray-200]="currentFilter !== filter.value"
       >
-        {{ filter.label }}
+        {{ filter.label | translate }}
       </button>
     </div>
 
     <!-- Loading indicator -->
     <div *ngIf="isLoading" class="flex justify-center items-center py-16">
       <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-      <span class="ml-4 text-gray-600">Loading events...</span>
+      <span class="ml-4 text-gray-600">{{'info.loading' | translate}}</span>
     </div>
 
     <!-- Once loading is done, show events or "no events" -->
@@ -51,7 +52,7 @@ import { AuthService } from '../../../core/auth.service';
             </ng-container>
             <ng-template #noImageTpl>
               <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
-                <span class="text-gray-500">No image</span>
+                <span class="text-gray-500">{{ 'events.no-image' | translate }}</span>
               </div>
             </ng-template>
 
@@ -65,7 +66,7 @@ import { AuthService } from '../../../core/auth.service';
 
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm text-gray-600">
-                  {{ event.participantCount || 0 }}/{{ event.maxParticipants }} participants
+                  {{ event.participantCount || 0 }}/{{ event.maxParticipants }} {{ 'form.participants' | translate }}
                 </span>
                 <span *ngIf="event.place?.name" class="text-sm text-gray-600">
                   {{ event.place.name }}
@@ -76,7 +77,7 @@ import { AuthService } from '../../../core/auth.service';
                 <button
                   (click)="viewEventDetails(event.id)"
                   class="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                  View details
+                  {{'misc.view-details' | translate}}
                 </button>
 
                 <button
@@ -85,7 +86,7 @@ import { AuthService } from '../../../core/auth.service';
                   [disabled]="isEventFull(event)"
                   class="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {{ isEventFull(event) ? 'Full' : 'Join' }}
+                  {{ isEventFull(event) ? ('events.full' | translate) : ('events.join' | translate) }}
                 </button>
               </div>
             </div>
@@ -96,12 +97,12 @@ import { AuthService } from '../../../core/auth.service';
 
     <ng-template #noEventsTpl>
       <div class="col-span-full text-center py-10">
-        <p class="text-gray-500 mb-4">No events found</p>
+        <p class="text-gray-500 mb-4">{{'misc.no-data' | translate}}</p>
         <button
           *ngIf="isLoggedIn && hasCreatorRole"
           (click)="navigateToCreate()"
           class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-          Create an Event
+          {{'events.create' | translate}}
         </button>
       </div>
     </ng-template>
@@ -123,12 +124,12 @@ export class EventListComponent implements OnInit {
   isLoading = false;
   currentFilter = 'all';
   filters = [
-    { label: 'All Events', value: 'all' },
-    { label: 'Upcoming', value: 'upcoming' },
-    { label: 'Ongoing', value: 'ongoing' },
-    { label: 'Past', value: 'past' },
-    { label: 'Available', value: 'available' },
-    { label: 'Popular', value: 'popular' }
+    { label: 'events.all', value: 'all' },
+    { label: 'events.upcoming', value: 'upcoming' },
+    { label: 'events.ongoing', value: 'ongoing' },
+    { label: 'events.past', value: 'past' },
+    { label: 'events.available', value: 'available' },
+    { label: 'events.popular', value: 'popular' }
   ];
 
   constructor(

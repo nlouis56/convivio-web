@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,5 +19,10 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true
     },
+    {
+      provide: LOCALE_ID,
+      useValue: typeof window !== 'undefined' ? 
+        (localStorage.getItem('selectedLanguage') || 'en-US') : 'en-US'
+    }
   ],
 };

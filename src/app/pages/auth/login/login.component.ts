@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
+import { TranslatePipe } from '../../../core/translate.pipe';
+import { LanguageService } from '../../../core/language.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
   template: `
     <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 class="text-2xl font-bold mb-6 text-center">Log In</h1>
+      <h1 class="text-2xl font-bold mb-6 text-center">{{ 'auth.login' | translate }}</h1>
 
       @if (errorMessage) {
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
@@ -20,7 +22,7 @@ import { AuthService } from '../../../core/auth.service';
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="mb-4">
-          <label for="username" class="block text-gray-700 mb-2">Username</label>
+          <label for="username" class="block text-gray-700 mb-2">{{ 'auth.username' | translate }}</label>
           <input
             type="text"
             id="username"
@@ -29,12 +31,12 @@ import { AuthService } from '../../../core/auth.service';
             [class.border-red-500]="formSubmitted && loginForm.get('username')?.invalid"
           >
           @if (formSubmitted && loginForm.get('username')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">Username is required</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.username-required' | translate }}</p>
           }
         </div>
 
         <div class="mb-6">
-          <label for="password" class="block text-gray-700 mb-2">Password</label>
+          <label for="password" class="block text-gray-700 mb-2">{{ 'auth.password' | translate }}</label>
           <input
             type="password"
             id="password"
@@ -43,7 +45,7 @@ import { AuthService } from '../../../core/auth.service';
             [class.border-red-500]="formSubmitted && loginForm.get('password')?.invalid"
           >
           @if (formSubmitted && loginForm.get('password')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">Password is required</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.password-required' | translate }}</p>
           }
         </div>
 
@@ -52,12 +54,12 @@ import { AuthService } from '../../../core/auth.service';
           class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           [disabled]="isLoading"
         >
-          {{ isLoading ? 'Logging in...' : 'Log In' }}
+          {{ isLoading ? ('auth.logging-in' | translate) : ('auth.login' | translate) }}
         </button>
       </form>
 
       <div class="mt-4 text-center">
-        <p>Don't have an account? <a routerLink="/register" class="text-blue-600 hover:underline">Sign up</a></p>
+        <p>{{ 'auth.dont-have-account' | translate }} <a routerLink="/register" class="text-blue-600 hover:underline">{{ 'auth.sign-up' | translate }}</a></p>
       </div>
     </div>
   `,
@@ -74,7 +76,8 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private languageService: LanguageService
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -102,9 +105,9 @@ export class LoginComponent {
       error: (error) => {
         this.isLoading = false;
         if (error.status === 401) {
-          this.errorMessage = 'Invalid username or password';
+          this.errorMessage = this.languageService.translate('auth.invalid-credentials');
         } else {
-          this.errorMessage = 'An error occurred during login. Please try again.';
+          this.errorMessage = this.languageService.translate('auth.login-error');
         }
         console.error('Login error', error);
       }

@@ -6,19 +6,20 @@ import { PlaceSelectorComponent } from '../../../components/places/place-selecto
 import { EventService } from '../../../core/event.service';
 import { Event, EventCreateRequest, EventUpdateRequest } from '../../../models/event.model';
 import { AuthService } from '../../../core/auth.service';
+import { TranslatePipe } from '../../../core/translate.pipe';
 
 @Component({
   selector: 'app-event-edit',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, PlaceSelectorComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, PlaceSelectorComponent, TranslatePipe],
   template: `
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6">Edit {{event?.title}}</h1>
+      <h1 class="text-3xl font-bold mb-6">{{ 'events.edit' | translate }} {{event?.title}}</h1>
 
       <form [formGroup]="eventEditForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded-lg p-6">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-            Event Title
+            {{ 'events.title' | translate }}
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -30,20 +31,20 @@ import { AuthService } from '../../../core/auth.service';
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
-            Place
+            {{ 'places.place' | translate }}
           </label>
 
           <app-place-selector
             formControlName="place"
             [defaultPlaceId]="event?.place"
-            label="Select a place"
+            label="{{ 'places.select' | translate }}"
             helper="Choose the location for your event"
           ></app-place-selector>
         </div>
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-            Description
+            {{ 'events.description-field' | translate }}
           </label>
           <textarea
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -56,7 +57,7 @@ import { AuthService } from '../../../core/auth.service';
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">
-            Maximum number of participants
+            {{ 'events.max-participants' | translate }}
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -68,11 +69,11 @@ import { AuthService } from '../../../core/auth.service';
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">
-            Dates and times
+            {{ 'events.dates-and-times' | translate }}
           </label>
           <div class="flex items-center mb-2">
             <label class="text-gray-700 text-sm font-medium mr-3 w-16" for="startTime">
-              Start:
+              {{ 'misc.start' | translate }}:
             </label>
             <input
               class="shadow appearance-none border rounded flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -84,7 +85,7 @@ import { AuthService } from '../../../core/auth.service';
           </div>
           <div class="flex items-center">
             <label class="text-gray-700 text-sm font-medium mr-3 w-16" for="endTime">
-              End:
+              {{ 'misc.end' | translate }}:
             </label>
             <input
               class="shadow appearance-none border rounded flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -106,28 +107,28 @@ import { AuthService } from '../../../core/auth.service';
             type="submit"
             [disabled]="!eventEditForm.valid"
             >
-              Update Event
+              {{ 'events.update' | translate }}
             </button>
             <button
               class="bg-gray-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
               (click)="onDelete()"
             >
-              Delete Event
+              {{ 'events.delete' | translate }}
             </button>
           </div>
           <!-- Right: Validity checks & Cancel -->
           <div class="flex flex-col items-end gap-1">
             <span class="text-red-500" *ngIf="eventEditForm.invalid && eventEditForm.touched">
-              Please fill out all required fields correctly.
+              {{ 'form.fill-required' | translate }}
             </span>
             <span class="text-green-500" *ngIf="eventEditForm.valid && eventEditForm.touched">
-              Form is valid!
+              {{ 'form.valid' | translate }}
             </span>
             <span class="text-gray-500" *ngIf="eventEditForm.pristine">
-              No changes made yet.
+              {{ 'form.no-changes' | translate }}
             </span>
-            <a routerLink="/events" class="text-blue-500 hover:underline">Cancel</a>
+            <a routerLink="/events" class="text-blue-500 hover:underline">{{ 'misc.cancel' | translate }}</a>
           </div>
         </div>
       </form>

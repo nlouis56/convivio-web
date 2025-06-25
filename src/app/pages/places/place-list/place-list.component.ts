@@ -5,15 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { PlaceService } from '../../../core/place.service';
 import { PlaceDto } from '../../../models/place.model';
 import { AuthService } from '../../../core/auth.service';
+import { TranslatePipe } from "../../../core/translate.pipe";
 
 @Component({
   selector: 'app-place-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslatePipe],
   template: `
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">Places</h1>
-      <p class="text-gray-600">Discover great locations around you</p>
+      <h1 class="text-3xl font-bold mb-2">{{'nav.places' | translate}}</h1>
+      <p class="text-gray-600">{{'places.description' | translate}}</p>
     </div>
 
     <div class="mb-8 flex flex-wrap gap-4">
@@ -28,14 +29,14 @@ import { AuthService } from '../../../core/auth.service';
         [class.text-white]="currentFilter === filter.value"
         [class.bg-gray-200]="currentFilter !== filter.value"
       >
-        {{ filter.label }}
+        {{ filter.label | translate }}
       </button>
     </div>
 
     <!-- Loading indicator -->
     <div *ngIf="isLoading" class="flex justify-center items-center py-16">
       <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-green-600"></div>
-      <span class="ml-4 text-gray-600">Loading places...</span>
+      <span class="ml-4 text-gray-600">{{ 'info.loading' | translate }}</span>
     </div>
 
     <!-- Once loading is done, show either the grid or "no places" -->
@@ -51,7 +52,7 @@ import { AuthService } from '../../../core/auth.service';
             </ng-container>
             <ng-template #noImageTpl>
               <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
-                <span class="text-gray-500">No image</span>
+                <span class="text-gray-500">{{ 'places.no-image' | translate }}</span>
               </div>
             </ng-template>
 
@@ -74,7 +75,7 @@ import { AuthService } from '../../../core/auth.service';
               <div class="flex justify-between items-center mt-4">
                 <button [routerLink]="['/places', place.id]"
                         class="px-4 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                  View details
+                  {{ 'misc.view-details' | translate }}
                 </button>
               </div>
             </div>
@@ -88,11 +89,11 @@ import { AuthService } from '../../../core/auth.service';
 
     <ng-template #noPlacesTpl>
       <div class="col-span-full text-center py-10">
-        <p class="text-gray-500 mb-4">No places found</p>
+        <p class="text-gray-500 mb-4">{{ 'places.no-places' | translate }}</p>
         <button *ngIf="isLoggedIn && hasCreatorRole"
                 [routerLink]="['/places/create']"
                 class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-          Add a Place
+          {{ 'places.add-place' | translate }}
         </button>
       </div>
     </ng-template>
@@ -113,11 +114,11 @@ export class PlaceListComponent implements OnInit {
   isLoading = false;
   currentFilter = 'all';
   filters = [
-    { label: 'All Places', value: 'all', access: '' },
-    { label: 'Top Rated', value: 'top-rated', access: '' },
-    { label: 'Popular', value: 'popular', access: '' },
-    { label: 'Most Visited', value: 'most-visited', access: '' },
-    { label: 'Deactivated', value: 'deactivated', access: 'ADMIN' }
+    { label: 'places.all', value: 'all', access: '' },
+    { label: 'places.top-rated', value: 'top-rated', access: '' },
+    { label: 'places.popular', value: 'popular', access: '' },
+    { label: 'places.most-visited', value: 'most-visited', access: '' },
+    { label: 'places.deactivated', value: 'deactivated', access: 'ADMIN' }
   ];
 
   constructor(

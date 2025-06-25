@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
+import { TranslatePipe } from '../../../core/translate.pipe';
+import { LanguageService } from '../../../core/language.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
   template: `
     <div class="max-w-md mx-auto my-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 class="text-2xl font-bold mb-6 text-center">Create an Account</h1>
+      <h1 class="text-2xl font-bold mb-6 text-center">{{ 'auth.register' | translate }}</h1>
 
       @if (errorMessage) {
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
@@ -20,13 +22,13 @@ import { AuthService } from '../../../core/auth.service';
 
       @if (success) {
         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-          <p>Registration successful! <a routerLink="/login" class="underline">Log in</a> to continue.</p>
+          <p>{{ 'auth.register-success' | translate }} <a routerLink="/login" class="underline">{{ 'auth.log-in-link' | translate }}</a> {{ 'auth.to-continue' | translate }}.</p>
         </div>
       }
 
       <form *ngIf="!success" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="mb-4">
-          <label for="username" class="block text-gray-700 mb-2">Username</label>
+          <label for="username" class="block text-gray-700 mb-2">{{ 'auth.username' | translate }}</label>
           <input
             type="text"
             id="username"
@@ -35,12 +37,12 @@ import { AuthService } from '../../../core/auth.service';
             [class.border-red-500]="formSubmitted && registerForm.get('username')?.invalid"
           >
           @if (formSubmitted && registerForm.get('username')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">Username is required</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.username-required' | translate }}</p>
           }
         </div>
 
         <div class="mb-4">
-          <label for="email" class="block text-gray-700 mb-2">Email</label>
+          <label for="email" class="block text-gray-700 mb-2">{{ 'auth.email' | translate }}</label>
           <input
             type="email"
             id="email"
@@ -49,15 +51,15 @@ import { AuthService } from '../../../core/auth.service';
             [class.border-red-500]="formSubmitted && registerForm.get('email')?.invalid"
           >
           @if (formSubmitted && registerForm.get('email')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">Email is required</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.email-required' | translate }}</p>
           }
           @if (formSubmitted && registerForm.get('email')?.errors?.['email']) {
-            <p class="text-red-500 text-sm mt-1">Please enter a valid email address</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.email' | translate }}</p>
           }
         </div>
 
         <div class="mb-4">
-          <label for="password" class="block text-gray-700 mb-2">Password</label>
+          <label for="password" class="block text-gray-700 mb-2">{{ 'auth.password' | translate }}</label>
           <input
             type="password"
             id="password"
@@ -66,16 +68,16 @@ import { AuthService } from '../../../core/auth.service';
             [class.border-red-500]="formSubmitted && registerForm.get('password')?.invalid"
           >
           @if (formSubmitted && registerForm.get('password')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">Password is required</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.password-required' | translate }}</p>
           }
           @if (formSubmitted && registerForm.get('password')?.errors?.['minlength']) {
-            <p class="text-red-500 text-sm mt-1">Password must be at least 6 characters</p>
+            <p class="text-red-500 text-sm mt-1">{{ 'validation.password-min' | translate }}</p>
           }
         </div>
 
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div>
-            <label for="firstName" class="block text-gray-700 mb-2">First Name</label>
+            <label for="firstName" class="block text-gray-700 mb-2">{{ 'auth.first-name' | translate }}</label>
             <input
               type="text"
               id="firstName"
@@ -84,7 +86,7 @@ import { AuthService } from '../../../core/auth.service';
             >
           </div>
           <div>
-            <label for="lastName" class="block text-gray-700 mb-2">Last Name</label>
+            <label for="lastName" class="block text-gray-700 mb-2">{{ 'auth.last-name' | translate }}</label>
             <input
               type="text"
               id="lastName"
@@ -99,12 +101,12 @@ import { AuthService } from '../../../core/auth.service';
           class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           [disabled]="isLoading"
         >
-          {{ isLoading ? 'Creating account...' : 'Create Account' }}
+          {{ isLoading ? ('auth.creating-account' | translate) : ('auth.register' | translate) }}
         </button>
       </form>
 
       <div class="mt-4 text-center">
-        <p>Already have an account? <a routerLink="/login" class="text-blue-600 hover:underline">Log in</a></p>
+        <p>{{ 'auth.already-have-account' | translate }} <a routerLink="/login" class="text-blue-600 hover:underline">{{ 'auth.log-in-link' | translate }}</a></p>
       </div>
     </div>
   `,
@@ -120,7 +122,8 @@ export class RegisterComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private languageService: LanguageService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -151,7 +154,7 @@ export class RegisterComponent {
         if (error.status === 400 && error.error?.message) {
           this.errorMessage = error.error.message;
         } else {
-          this.errorMessage = 'An error occurred during registration. Please try again.';
+          this.errorMessage = this.languageService.translate('auth.register-error');
         }
         console.error('Registration error', error);
       }

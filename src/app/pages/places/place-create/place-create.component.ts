@@ -12,6 +12,8 @@ import {
 import { MapPickerComponent } from '../../../components/maps/map-picker.component';
 import { PlaceService } from '../../../core/place.service';
 import { PlaceDto } from '../../../models/place.model';
+import { TranslatePipe } from '../../../core/translate.pipe';
+
 @Component({
   selector: 'app-place-create',
   standalone: true,
@@ -20,11 +22,12 @@ import { PlaceDto } from '../../../models/place.model';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    MapPickerComponent
+    MapPickerComponent,
+    TranslatePipe
   ],
   template: `
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6">Create New Place</h1>
+      <h1 class="text-3xl font-bold mb-6">{{ 'places.create' | translate }}</h1>
 
       <form
         [formGroup]="placeForm"
@@ -34,7 +37,7 @@ import { PlaceDto } from '../../../models/place.model';
         <!-- Name -->
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
-            >Place Name</label
+            >{{ 'places.name' | translate }}</label
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -50,7 +53,7 @@ import { PlaceDto } from '../../../models/place.model';
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="description"
-            >Description</label
+            >{{ 'places.description-field' | translate }}</label
           >
           <textarea
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -76,7 +79,7 @@ import { PlaceDto } from '../../../models/place.model';
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="lat"
-              >Latitude</label
+              >{{ 'places.latitude' | translate }}</label
             >
             <input
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
@@ -90,7 +93,7 @@ import { PlaceDto } from '../../../models/place.model';
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="lng"
-              >Longitude</label
+              >{{ 'places.longitude' | translate }}</label
             >
             <input
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
@@ -107,7 +110,7 @@ import { PlaceDto } from '../../../models/place.model';
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="address"
-            >Address</label
+            >{{ 'places.address' | translate }}</label
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -123,14 +126,14 @@ import { PlaceDto } from '../../../models/place.model';
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="category"
-            >Category</label
+            >{{ 'places.category' | translate }}</label
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="category"
             type="text"
             formControlName="category"
-            placeholder="What type of place is this? (restaurant, bar, park, etc.)"
+            placeholder="{{ 'places.category-placeholder' | translate }}"
           />
         </div>
 
@@ -140,9 +143,9 @@ import { PlaceDto } from '../../../models/place.model';
             type="submit"
             [disabled]="!placeForm.valid"
           >
-            Create Place
+            {{ 'places.create' | translate }}
           </button>
-          <a routerLink="/places" class="text-blue-500 hover:underline">Cancel</a>
+          <a routerLink="/places" class="text-blue-500 hover:underline">{{ 'misc.cancel' | translate }}</a>
         </div>
       </form>
     </div>

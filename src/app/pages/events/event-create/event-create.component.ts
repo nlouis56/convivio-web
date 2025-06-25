@@ -5,19 +5,20 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { PlaceSelectorComponent } from '../../../components/places/place-selector.component';
 import { EventService } from '../../../core/event.service';
 import { EventCreateRequest } from '../../../models/event.model';
+import { TranslatePipe } from "../../../core/translate.pipe";
 
 @Component({
   selector: 'app-event-create',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, PlaceSelectorComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, PlaceSelectorComponent, TranslatePipe],
   template: `
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6">Create New Event</h1>
+      <h1 class="text-3xl font-bold mb-6">{{ 'events.create' | translate }}</h1>
 
       <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded-lg p-6">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-            Event Title
+            {{ 'events.title' | translate }}
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -29,19 +30,19 @@ import { EventCreateRequest } from '../../../models/event.model';
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
-            Place
+            {{ 'places.place' | translate }}
           </label>
 
           <app-place-selector
             formControlName="place"
-            label="Select a place"
-            helper="Choose the location for your event"
+            label=""
+            [helper]="'places.select' | translate"
           ></app-place-selector>
         </div>
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-            Description
+            {{ 'events.description-field' | translate }}
           </label>
           <textarea
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -54,7 +55,7 @@ import { EventCreateRequest } from '../../../models/event.model';
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">
-            Maximum number of participants
+            {{'events.max-participants' | translate }}
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -66,11 +67,11 @@ import { EventCreateRequest } from '../../../models/event.model';
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">
-            Dates and times
+            {{ 'events.dates-and-times' | translate }}
           </label>
           <div class="flex items-center mb-2">
             <label class="text-gray-700 text-sm font-medium mr-3 w-16" for="startTime">
-              Start:
+              {{ 'misc.start' | translate }}:
             </label>
             <input
               class="shadow appearance-none border rounded flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -82,7 +83,7 @@ import { EventCreateRequest } from '../../../models/event.model';
           </div>
           <div class="flex items-center">
             <label class="text-gray-700 text-sm font-medium mr-3 w-16" for="endTime">
-              End:
+              {{ 'misc.end' | translate }}:
             </label>
             <input
               class="shadow appearance-none border rounded flex-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -100,9 +101,9 @@ import { EventCreateRequest } from '../../../models/event.model';
             type="submit"
             [disabled]="!eventForm.valid"
           >
-            Create Event
+            {{ 'events.create' | translate }}
           </button>
-          <a routerLink="/events" class="text-blue-500 hover:underline">Cancel</a>
+          <a routerLink="/events" class="text-blue-500 hover:underline">{{ 'misc.cancel' | translate }}</a>
         </div>
       </form>
     </div>

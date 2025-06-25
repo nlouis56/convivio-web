@@ -5,17 +5,18 @@ import { EventService } from '../../../core/event.service';
 import { Event } from '../../../models/event.model';
 import { MapDisplayComponent } from '../../../components/maps/map-display.component';
 import { AuthService } from '../../../core/auth.service';
+import { TranslatePipe } from "../../../core/translate.pipe";
 
 @Component({
   selector: 'app-event-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, MapDisplayComponent],
+  imports: [CommonModule, RouterModule, MapDisplayComponent, TranslatePipe],
   template: `
     <!-- Loading state -->
     <ng-container *ngIf="isLoading; else loadedTpl">
       <div class="flex flex-col items-center justify-center py-16">
         <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-        <span class="mt-4 text-gray-600">Loading event details...</span>
+        <span class="mt-4 text-gray-600">{{ 'events.loading-details' | translate }}</span>
       </div>
     </ng-container>
 
@@ -27,34 +28,34 @@ import { AuthService } from '../../../core/auth.service';
           <div class="flex flex-col gap-6">
             <div class="bg-white shadow-md rounded-lg p-6">
               <h2 class="text-2xl font-bold mb-4">
-                Event Details - {{ eventDetails.title }}
+                {{ 'misc.details' | translate }} - {{ eventDetails.title }}
               </h2>
               <p class="text-gray-700 mb-2">
-                <strong>Date:</strong>
+                <strong>{{ 'events.date' | translate }}:</strong>
                 {{ eventDetails.startDateTime | date: 'fullDate' }}
               </p>
               <p class="text-gray-700 mb-2">
-                <strong>Location:</strong>
+                <strong>{{ 'misc.location' | translate }}:</strong>
                 {{ eventDetails.place.address }}
               </p>
               <p class="text-gray-700 mb-2">
-                <strong>Description:</strong>
+                <strong>{{ 'events.description-field' | translate }}:</strong>
                 {{ eventDetails.description }}
               </p>
             </div>
 
             <div class="bg-white shadow-md rounded-lg p-6">
-              <h2 class="text-2xl font-bold mb-4">Participation</h2>
+              <h2 class="text-2xl font-bold mb-4">{{ 'events.participants' | translate }}</h2>
               <p class="text-gray-700 mb-2">
-                <strong>Current Participants:</strong>
-                {{ eventDetails.participantCount ?? 'Be the first to join!' }}
+                <strong>{{ 'events.participants' | translate }}: </strong>
+                {{ eventDetails.participantCount ?? ('events.first-to-join' | translate) }}
               </p>
               <button
                 class="bg-blue-600 text-white px-4 py-2 mt-3 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 (click)="toggleParticipation()"
                 [disabled]="isLoading"
               >
-                {{ isUserParticipant() ? 'Leave Event' : 'Join Event' }}
+                {{ isUserParticipant() ? ('events.leave' | translate) : ('events.join' | translate) }}
               </button>
             </div>
           </div>
@@ -68,7 +69,7 @@ import { AuthService } from '../../../core/auth.service';
 
         <div class="mt-6">
           <a routerLink="/events" class="text-blue-600 hover:underline">
-            ← Back to Events
+            ← {{'events.back-to' | translate}}
           </a>
         </div>
 
@@ -85,9 +86,9 @@ import { AuthService } from '../../../core/auth.service';
       <!-- Event not found -->
       <ng-template #notFoundTpl>
         <div class="text-center py-16">
-          <p class="text-red-500 mb-4">Event not found.</p>
+          <p class="text-red-500 mb-4">{{ 'events.not-found' | translate }}</p>
           <a routerLink="/events" class="text-blue-600 hover:underline">
-            ← Back to Events
+            ← {{ 'events.back-to-events' | translate }}
           </a>
         </div>
       </ng-template>

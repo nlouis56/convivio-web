@@ -4,19 +4,20 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PlaceDto } from '../../../models/place.model';
 import { PlaceService } from '../../../core/place.service';
+import { TranslatePipe } from '../../../core/translate.pipe';
 
 @Component({
   selector: 'app-place-edit',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, TranslatePipe],
   template: `
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-3xl font-bold mb-6">Edit Place</h1>
+      <h1 class="text-3xl font-bold mb-6">{{ 'places.edit' | translate }}</h1>
 
       <form [formGroup]="placeForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded-lg p-6">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
-            Place Name
+            {{ 'places.name' | translate }}
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -29,7 +30,7 @@ import { PlaceService } from '../../../core/place.service';
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-            Description
+            {{ 'places.description-field' | translate }}
           </label>
           <textarea
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -42,7 +43,7 @@ import { PlaceService } from '../../../core/place.service';
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="address">
-            Address
+            {{ 'places.address' | translate }}
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -61,28 +62,28 @@ import { PlaceService } from '../../../core/place.service';
               type="submit"
               [disabled]="!placeForm.valid"
             >
-              Update Place
+              {{ 'places.update' | translate }}
             </button>
             <button
               class="bg-gray-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
               (click)="onDelete()"
             >
-              Delete place
+              {{ 'places.delete' | translate }}
             </button>
           </div>
           <!-- Right: Validity checks & Cancel -->
           <div class="flex flex-col items-end gap-1">
             <span class="text-red-500" *ngIf="placeForm.invalid && placeForm.touched">
-              Please fill out all required fields correctly.
+              {{ 'form.fill-required' | translate }}
             </span>
             <span class="text-green-500" *ngIf="placeForm.valid && placeForm.touched">
-              Form is valid!
+              {{ 'form.valid' | translate }}
             </span>
             <span class="text-gray-500" *ngIf="placeForm.pristine">
-              No changes made yet.
+              {{ 'form.no-changes' | translate }}
             </span>
-            <a [routerLink]="['/places', placeId]" class="text-blue-500 hover:underline">Cancel</a>
+            <a [routerLink]="['/places', placeId]" class="text-blue-500 hover:underline">{{ 'misc.cancel' | translate }}</a>
           </div>
         </div>
       </form>

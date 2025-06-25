@@ -5,6 +5,7 @@ import { PlaceDto } from '../../../models/place.model';
 import { PlaceService } from '../../../core/place.service';
 import { AuthService } from '../../../core/auth.service';
 import { MapDisplayComponent } from '../../../components/maps/map-display.component';
+import { TranslatePipe } from "../../../core/translate.pipe";
 
 
 @Component({
@@ -13,12 +14,13 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
   imports: [
     CommonModule,
     RouterModule,
-    MapDisplayComponent
-  ],
+    MapDisplayComponent,
+    TranslatePipe
+],
   template: `
     <div class="max-w-5xl mx-auto">
       <!-- Heading -->
-      <h1 class="text-3xl font-bold mb-2">Place Details</h1>
+      <h1 class="text-3xl font-bold mb-2">{{'misc.details' | translate}}</h1>
       <p class="text-gray-600 mb-6">Place ID: {{ placeId }}</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -34,32 +36,32 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
             </p>
 
             <div class="mb-4">
-              <strong>Category:</strong> {{ placeDTO.category }}
+              <strong>{{'places.category' | translate}}: </strong> {{ placeDTO.category }}
             </div>
 
             <div class="mb-4">
-              <strong>Address:</strong> {{ placeDTO.address }}
+              <strong>{{'places.address' | translate}}: </strong> {{ placeDTO.address }}
               <button
                 class="ml-2 text-blue-600 hover:underline"
                 (click)="openGmaps(placeDTO)"
                 *ngIf="placeDTO"
               >
-                View on Google Maps
+                {{'places.view-on-gmaps' | translate}}
               </button>
             </div>
 
             <div class="mb-4">
-              <strong>Average Rating:</strong>
+              <strong>{{'places.average-rating' | translate}}: </strong>
               <span *ngIf="placeDTO.averageRating as avg">
                 {{ avg.toFixed(1) }}
               </span>
               <span *ngIf="!placeDTO.averageRating">
-                Not rated yet
+                {{ 'places.not-rated' | translate }}
               </span>
             </div>
 
             <div class="mb-4">
-              <strong>Photos:</strong>
+              <strong>{{'places.photos' | translate}}</strong>
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
               >
@@ -74,7 +76,7 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
           </ng-container>
 
           <ng-template #loading>
-            <p class="text-gray-500">Loading place details...</p>
+            <p class="text-gray-500">{{'info.loading' | translate}}</p>
           </ng-template>
         </div>
 
@@ -89,7 +91,7 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
         class="bg-white shadow-md rounded-lg p-6 mt-8"
         *ngIf="placeDTO; else noPlace"
       >
-        <h2 class="text-2xl font-semibold mb-4">Reviews</h2>
+        <h2 class="text-2xl font-semibold mb-4">{{'misc.reviews' | translate}}</h2>
 
         <ng-container
 
@@ -109,13 +111,13 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
         </ng-container>
 
         <ng-template #noReviews>
-          <p class="text-gray-500">No reviews yet.</p>
+          <p class="text-gray-500">{{'misc.no-data' | translate}}</p>
         </ng-template>
       </div>
 
       <ng-template #noPlace>
         <p class="text-red-500 mt-6">
-          Place not found or details could not be loaded.
+          {{'misc.no-data' | translate}}
         </p>
       </ng-template>
 
@@ -124,7 +126,7 @@ import { MapDisplayComponent } from '../../../components/maps/map-display.compon
         <a
           routerLink="/places"
           class="text-blue-600 hover:underline"
-          >← Back to Places</a
+          >← {{'places.back-to' | translate}}</a
         >
       </div>
 

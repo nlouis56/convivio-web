@@ -7,24 +7,25 @@ import { AuthService } from '../../core/auth.service';
 import { EventService } from '../../core/event.service';
 import { User } from '../../models/user.model';
 import { Event } from '../../models/event.model';
+import { TranslatePipe } from '../../core/translate.pipe';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslatePipe],
   template: `
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h1 class="text-3xl font-bold mb-6">Your Profile</h1>
+      <h1 class="text-3xl font-bold mb-6">{{ 'profile.title' | translate }}</h1>
 
       @if (isLoading) {
         <div class="text-center py-8">
-          <p>Loading profile...</p>
+          <p>{{ 'profile.loading' | translate }}</p>
         </div>
       } @else if (user) {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <div class="mb-6">
-              <h2 class="text-xl font-semibold mb-4">Profile Information</h2>
+              <h2 class="text-xl font-semibold mb-4">{{ 'profile.info' | translate }}</h2>
 
               @if (errorMessage) {
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
@@ -40,7 +41,7 @@ import { Event } from '../../models/event.model';
 
               <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
                 <div class="mb-4">
-                  <label for="username" class="block text-gray-700 mb-2">Username</label>
+                  <label for="username" class="block text-gray-700 mb-2">{{ 'auth.username' | translate }}</label>
                   <input
                     type="text"
                     id="username"
@@ -49,12 +50,12 @@ import { Event } from '../../models/event.model';
                     [class.border-red-500]="profileForm.get('username')?.invalid && (profileForm.get('username')?.dirty || profileForm.get('username')?.touched)"
                   >
                   @if (profileForm.get('username')?.invalid && (profileForm.get('username')?.dirty || profileForm.get('username')?.touched)) {
-                    <p class="text-red-500 text-sm mt-1">Username is required</p>
+                    <p class="text-red-500 text-sm mt-1">{{ 'validation.username-required' | translate }}</p>
                   }
                 </div>
 
                 <div class="mb-4">
-                  <label for="email" class="block text-gray-700 mb-2">Email</label>
+                  <label for="email" class="block text-gray-700 mb-2">{{ 'auth.email' | translate }}</label>
                   <input
                     type="email"
                     id="email"
@@ -63,13 +64,13 @@ import { Event } from '../../models/event.model';
                     [class.border-red-500]="profileForm.get('email')?.invalid && (profileForm.get('email')?.dirty || profileForm.get('email')?.touched)"
                   >
                   @if (profileForm.get('email')?.invalid && (profileForm.get('email')?.dirty || profileForm.get('email')?.touched)) {
-                    <p class="text-red-500 text-sm mt-1">Valid email is required</p>
+                    <p class="text-red-500 text-sm mt-1">{{ 'validation.email' | translate }}</p>
                   }
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
                   <div>
-                    <label for="firstName" class="block text-gray-700 mb-2">First Name</label>
+                    <label for="firstName" class="block text-gray-700 mb-2">{{ 'auth.first-name' | translate }}</label>
                     <input
                       type="text"
                       id="firstName"
@@ -78,7 +79,7 @@ import { Event } from '../../models/event.model';
                     >
                   </div>
                   <div>
-                    <label for="lastName" class="block text-gray-700 mb-2">Last Name</label>
+                    <label for="lastName" class="block text-gray-700 mb-2">{{ 'auth.last-name' | translate }}</label>
                     <input
                       type="text"
                       id="lastName"
@@ -93,22 +94,22 @@ import { Event } from '../../models/event.model';
                   class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
                   [disabled]="profileForm.invalid || isSubmitting"
                 >
-                  {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+                  {{ isSubmitting ? ('profile.saving' | translate) : ('profile.save-changes' | translate) }}
                 </button>
               </form>
             </div>
 
             <div>
-              <h2 class="text-xl font-semibold mb-4">Account Information</h2>
+              <h2 class="text-xl font-semibold mb-4">{{ 'profile.account-info' | translate }}</h2>
               <div class="bg-gray-100 p-4 rounded-lg">
-                <p class="mb-2"><strong>User ID:</strong> {{ user.id }}</p>
-                <p class="mb-2"><strong>Roles:</strong> {{ user.roles?.join(', ') }}</p>
+                <p class="mb-2"><strong>{{ 'profile.user-id' | translate }}:</strong> {{ user.id }}</p>
+                <p class="mb-2"><strong>{{ 'profile.roles' | translate }}:</strong> {{ user.roles?.join(', ') }}</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 class="text-xl font-semibold mb-4">Your Events</h2>
+            <h2 class="text-xl font-semibold mb-4">{{ 'profile.your-events' | translate }}</h2>
 
             <div class="space-y-4">
               @if (userEvents.length > 0) {
@@ -117,40 +118,40 @@ import { Event } from '../../models/event.model';
                     <h3 class="text-lg font-medium mb-2">{{ event.title }}</h3>
                     <p class="text-gray-600 mb-2">{{ formatDate(event.startDateTime) }}</p>
                     <div class="flex justify-between mt-3">
-                      <a [routerLink]="['/events', event.id]" class="text-blue-600 hover:underline">View details</a>
+                      <a [routerLink]="['/events', event.id]" class="text-blue-600 hover:underline">{{ 'profile.view-details' | translate }}</a>
                       <button
                         (click)="leaveEvent(event.id)"
                         class="text-red-600 hover:underline"
                       >
-                        Leave event
+                        {{ 'profile.leave-event' | translate }}
                       </button>
                     </div>
                   </div>
                 }
               } @else {
-                <p class="text-gray-500">You haven't joined any events yet.</p>
-                <a routerLink="/events" class="text-blue-600 hover:underline block mt-4">Browse events</a>
+                <p class="text-gray-500">{{ 'profile.no-events' | translate }}</p>
+                <a routerLink="/events" class="text-blue-600 hover:underline block mt-4">{{ 'profile.browse-events' | translate }}</a>
               }
             </div>
 
             @if (hasCreatorRole) {
-              <h2 class="text-xl font-semibold mb-4 mt-8">Events You Created</h2>
+              <h2 class="text-xl font-semibold mb-4 mt-8">{{ 'profile.created-events' | translate }}</h2>
               <div class="space-y-4">
                 @if (createdEvents.length > 0) {
                   @for (event of createdEvents; track event.id) {
                     <div class="border border-gray-200 rounded-lg p-4">
                       <h3 class="text-lg font-medium mb-2">{{ event.title }}</h3>
                       <p class="text-gray-600 mb-1">{{ formatDate(event.startDateTime) }}</p>
-                      <p class="text-sm text-gray-500">{{ event.participantCount || 0 }}/{{ event.maxParticipants }} participants</p>
+                      <p class="text-sm text-gray-500">{{ event.participantCount || 0 }}/{{ event.maxParticipants }} {{ 'form.participants' | translate }}</p>
                       <div class="flex justify-between mt-3">
-                        <a [routerLink]="['/events', event.id]" class="text-blue-600 hover:underline">View details</a>
-                        <a [routerLink]="['/events', event.id, 'edit']" class="text-green-600 hover:underline">Edit</a>
+                        <a [routerLink]="['/events', event.id]" class="text-blue-600 hover:underline">{{ 'profile.view-details' | translate }}</a>
+                        <a [routerLink]="['/events', event.id, 'edit']" class="text-green-600 hover:underline">{{ 'profile.edit' | translate }}</a>
                       </div>
                     </div>
                   }
                 } @else {
-                  <p class="text-gray-500">You haven't created any events yet.</p>
-                  <a routerLink="/events/create" class="text-blue-600 hover:underline block mt-4">Create an event</a>
+                  <p class="text-gray-500">{{ 'profile.no-created-events' | translate }}</p>
+                  <a routerLink="/events/create" class="text-blue-600 hover:underline block mt-4">{{ 'profile.create-event' | translate }}</a>
                 }
               </div>
             }
@@ -158,7 +159,7 @@ import { Event } from '../../models/event.model';
         </div>
       } @else {
         <div class="text-center py-8">
-          <p class="text-red-500">Could not load profile. Please try again later.</p>
+          <p class="text-red-500">{{ 'profile.could-not-load' | translate }}</p>
         </div>
       }
     </div>
