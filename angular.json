@@ -26,13 +26,16 @@
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
-                "output": "assets/leaflet"
+                "output": "assets/images"
               }
             ],
             "styles": [
               "node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
+            "loader": {
+              ".png": "binary"
+            },
             "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,
@@ -96,7 +99,7 @@
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
-                "output": "assets/leaflet"
+                "output": "assets/images"
               }
             ],
             "styles": [
