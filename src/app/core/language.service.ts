@@ -19,7 +19,7 @@ export class LanguageService {
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
 
   public readonly availableLanguages: Language[] = [
-    { code: 'en-US', name: 'English', flag: '🇺🇸' },
+    { code: 'en-US', name: 'English', flag: '🇬🇧' },
     { code: 'fr-FR', name: 'Français', flag: '🇫🇷' }
   ];
 
@@ -163,7 +163,7 @@ export class LanguageService {
       'places.latitude': 'Latitude',
       'places.longitude': 'Longitude',
       'places.category-placeholder': 'What type of place is this? (restaurant, bar, park, etc.)',
-      
+
       'reviews.new': "Write a review",
       'reviews.rating': "Rating",
       'reviews.comment': "Comment",
@@ -179,12 +179,14 @@ export class LanguageService {
       'reviews.be-first-to-review': "Be the first to review",
       'reviews.error-loading-reviews': "Error loading reviews",
       'reviews.try-again': "Try again",
+      'reviews.total-reviews': "Total reviews",
 
       'form.fill-required': 'Please fill out all required fields correctly.',
       'form.valid': 'Form is valid!',
       'form.no-changes': 'No changes made yet.',
       'form.participants': 'participants'
     },
+
     'fr-FR': {
       'nav.home': 'Accueil',
       'nav.events': 'Événements',
@@ -324,7 +326,7 @@ export class LanguageService {
       'places.latitude': 'Latitude',
       'places.longitude': 'Longitude',
       'places.category-placeholder': 'Quel type de lieu est-ce ? (restaurant, bar, parc, etc.)',
-      
+
       'reviews.new': "Écrire un avis",
       'reviews.rating': "Note",
       'reviews.comment': "Commentaire",
@@ -340,7 +342,8 @@ export class LanguageService {
       'reviews.be-first-to-review': "Soyez le premier à écrire un avis",
       'reviews.error-loading-reviews': "Erreur lors du chargement des avis",
       'reviews.try-again': "Réessayer",
-      
+      'reviews.total-reviews': "Total des avis",
+
       'form.fill-required': 'Veuillez remplir tous les champs requis correctement.',
       'form.valid': 'Le formulaire est valide !',
       'form.no-changes': 'Aucune modification effectuée pour le moment.',

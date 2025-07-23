@@ -20,4 +20,4 @@ export const authGuard = (
 
   // Store the attempted URL for redirecting after login
   return router.parseUrl('/login?returnUrl=' + state.url);
-}; 
+};

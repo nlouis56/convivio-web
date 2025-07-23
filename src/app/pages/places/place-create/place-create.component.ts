@@ -32,15 +32,15 @@ import { TranslatePipe } from '../../../core/translate.pipe';
       <form
         [formGroup]="placeForm"
         (ngSubmit)="onSubmit()"
-        class="bg-white shadow-md rounded-lg p-6"
+        class="card p-6"
       >
         <!-- Name -->
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
+          <label class="block text-neutral text-sm font-bold mb-2" for="name"
             >{{ 'places.name' | translate }}</label
           >
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="input"
             id="name"
             type="text"
             formControlName="name"
@@ -51,12 +51,12 @@ import { TranslatePipe } from '../../../core/translate.pipe';
         <!-- Description -->
         <div class="mb-4">
           <label
-            class="block text-gray-700 text-sm font-bold mb-2"
+            class="block text-neutral text-sm font-bold mb-2"
             for="description"
             >{{ 'places.description-field' | translate }}</label
           >
           <textarea
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="input"
             id="description"
             formControlName="description"
             placeholder="Place description"
@@ -77,12 +77,12 @@ import { TranslatePipe } from '../../../core/translate.pipe';
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label
-              class="block text-gray-700 text-sm font-bold mb-2"
+              class="block text-neutral text-sm font-bold mb-2"
               for="lat"
               >{{ 'places.latitude' | translate }}</label
             >
             <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
+              class="input bg-surface"
               id="lat"
               type="text"
               formControlName="latitude"
@@ -91,12 +91,12 @@ import { TranslatePipe } from '../../../core/translate.pipe';
           </div>
           <div>
             <label
-              class="block text-gray-700 text-sm font-bold mb-2"
+              class="block text-neutral text-sm font-bold mb-2"
               for="lng"
               >{{ 'places.longitude' | translate }}</label
             >
             <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
+              class="input bg-surface"
               id="lng"
               type="text"
               formControlName="longitude"
@@ -108,12 +108,12 @@ import { TranslatePipe } from '../../../core/translate.pipe';
         <!-- Address -->
         <div class="mb-4">
           <label
-            class="block text-gray-700 text-sm font-bold mb-2"
+            class="block text-neutral text-sm font-bold mb-2"
             for="address"
             >{{ 'places.address' | translate }}</label
           >
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="input"
             id="address"
             type="text"
             formControlName="address"
@@ -124,12 +124,12 @@ import { TranslatePipe } from '../../../core/translate.pipe';
         <!-- Category -->
         <div class="mb-4">
           <label
-            class="block text-gray-700 text-sm font-bold mb-2"
+            class="block text-neutral text-sm font-bold mb-2"
             for="category"
             >{{ 'places.category' | translate }}</label
           >
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="input"
             id="category"
             type="text"
             formControlName="category"
@@ -139,13 +139,13 @@ import { TranslatePipe } from '../../../core/translate.pipe';
 
         <div class="flex items-center justify-between">
           <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            class="btn"
             type="submit"
             [disabled]="!placeForm.valid"
           >
             {{ 'places.create' | translate }}
           </button>
-          <a routerLink="/places" class="text-blue-500 hover:underline">{{ 'misc.cancel' | translate }}</a>
+          <a routerLink="/places" class="link">{{ 'misc.cancel' | translate }}</a>
         </div>
       </form>
     </div>

@@ -10,7 +10,24 @@ import { LanguageService, Language } from '../../../core/language.service';
     <div class="relative inline-block text-left">
       <button
         type="button"
-        class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        class="inline-flex
+                justify-center
+                w-full
+                px-4
+                py-2
+                text-sm
+                font-medium
+                text-white
+                bg-primary-600
+                border
+                border-transparent
+                rounded-md
+                hover:bg-primary-700
+                focus:outline-none
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-primary-500
+                transition-colors"
         (click)="toggleDropdown()"
         aria-expanded="true"
         aria-haspopup="true"
@@ -34,7 +51,17 @@ import { LanguageService, Language } from '../../../core/language.service';
 
       <div
         *ngIf="isDropdownOpen"
-        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="origin-top-right
+              absolute
+              right-0
+              mt-2
+              w-56
+              rounded-md
+              shadow-lg
+              bg-white ring-1
+              ring-black
+              ring-opacity-5
+              focus:outline-none"
         style="z-index: 9999;"
         role="menu"
         aria-orientation="vertical"
@@ -45,12 +72,20 @@ import { LanguageService, Language } from '../../../core/language.service';
           <button
             *ngFor="let language of languageService.availableLanguages"
             type="button"
-            class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            class="flex
+                  items-center
+                  w-full
+                  px-4
+                  py-2
+                  text-sm
+                  text-gray-700
+                  hover:bg-gray-100
+                  hover:text-gray-900"
             [class.bg-gray-100]="language.code === getCurrentLanguage()"
             (click)="selectLanguage(language.code)"
             role="menuitem"
           >
-            <span class="mr-3">{{ language.flag }}</span>
+            <span class="mr-3 p-1 bg-gray-200">{{ language.flag }}</span>
             {{ language.name }}
           </button>
         </div>
@@ -96,4 +131,4 @@ export class LanguageSwitcherComponent {
       this.isDropdownOpen = false;
     }
   }
-} 
+}

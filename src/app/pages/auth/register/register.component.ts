@@ -11,94 +11,94 @@ import { LanguageService } from '../../../core/language.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
   template: `
-    <div class="max-w-md mx-auto my-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 class="text-2xl font-bold mb-6 text-center">{{ 'auth.register' | translate }}</h1>
+    <div class="max-w-md mx-auto my-10 p-6 card">
+      <h1 class="text-2xl font-bold mb-6 text-center text-neutral">{{ 'auth.register' | translate }}</h1>
 
       @if (errorMessage) {
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+        <div class="bg-danger-alert mb-6" role="alert">
           <p>{{ errorMessage }}</p>
         </div>
       }
 
       @if (success) {
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-          <p>{{ 'auth.register-success' | translate }} <a routerLink="/login" class="underline">{{ 'auth.log-in-link' | translate }}</a> {{ 'auth.to-continue' | translate }}.</p>
+        <div class="bg-primary-50 border-l-4 border-primary-500 text-primary-700 p-4 mb-6" role="alert">
+          <p>{{ 'auth.register-success' | translate }} <a routerLink="/login" class="link">{{ 'auth.log-in-link' | translate }}</a> {{ 'auth.to-continue' | translate }}.</p>
         </div>
       }
 
       <form *ngIf="!success" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="mb-4">
-          <label for="username" class="block text-gray-700 mb-2">{{ 'auth.username' | translate }}</label>
+          <label for="username" class="block text-neutral mb-2 font-medium">{{ 'auth.username' | translate }}</label>
           <input
             type="text"
             id="username"
             formControlName="username"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-            [class.border-red-500]="formSubmitted && registerForm.get('username')?.invalid"
+            class="input"
+            [class.input-error]="formSubmitted && registerForm.get('username')?.invalid"
           >
           @if (formSubmitted && registerForm.get('username')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">{{ 'validation.username-required' | translate }}</p>
+            <p class="text-error text-sm mt-1">{{ 'validation.username-required' | translate }}</p>
           }
         </div>
 
         <div class="mb-4">
-          <label for="email" class="block text-gray-700 mb-2">{{ 'auth.email' | translate }}</label>
+          <label for="email" class="block text-neutral mb-2 font-medium">{{ 'auth.email' | translate }}</label>
           <input
             type="email"
             id="email"
             formControlName="email"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-            [class.border-red-500]="formSubmitted && registerForm.get('email')?.invalid"
+            class="input"
+            [class.input-error]="formSubmitted && registerForm.get('email')?.invalid"
           >
           @if (formSubmitted && registerForm.get('email')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">{{ 'validation.email-required' | translate }}</p>
+            <p class="text-error text-sm mt-1">{{ 'validation.email-required' | translate }}</p>
           }
           @if (formSubmitted && registerForm.get('email')?.errors?.['email']) {
-            <p class="text-red-500 text-sm mt-1">{{ 'validation.email' | translate }}</p>
+            <p class="text-error text-sm mt-1">{{ 'validation.email' | translate }}</p>
           }
         </div>
 
         <div class="mb-4">
-          <label for="password" class="block text-gray-700 mb-2">{{ 'auth.password' | translate }}</label>
+          <label for="password" class="block text-neutral mb-2 font-medium">{{ 'auth.password' | translate }}</label>
           <input
             type="password"
             id="password"
             formControlName="password"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-            [class.border-red-500]="formSubmitted && registerForm.get('password')?.invalid"
+            class="input"
+            [class.input-error]="formSubmitted && registerForm.get('password')?.invalid"
           >
           @if (formSubmitted && registerForm.get('password')?.errors?.['required']) {
-            <p class="text-red-500 text-sm mt-1">{{ 'validation.password-required' | translate }}</p>
+            <p class="text-error text-sm mt-1">{{ 'validation.password-required' | translate }}</p>
           }
           @if (formSubmitted && registerForm.get('password')?.errors?.['minlength']) {
-            <p class="text-red-500 text-sm mt-1">{{ 'validation.password-min' | translate }}</p>
+            <p class="text-error text-sm mt-1">{{ 'validation.password-min' | translate }}</p>
           }
         </div>
 
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div>
-            <label for="firstName" class="block text-gray-700 mb-2">{{ 'auth.first-name' | translate }}</label>
+            <label for="firstName" class="block text-neutral mb-2 font-medium">{{ 'auth.first-name' | translate }}</label>
             <input
               type="text"
               id="firstName"
               formControlName="firstName"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              class="input"
             >
           </div>
           <div>
-            <label for="lastName" class="block text-gray-700 mb-2">{{ 'auth.last-name' | translate }}</label>
+            <label for="lastName" class="block text-neutral mb-2 font-medium">{{ 'auth.last-name' | translate }}</label>
             <input
               type="text"
               id="lastName"
               formControlName="lastName"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              class="input"
             >
           </div>
         </div>
 
         <button
           type="submit"
-          class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+          class="w-full btn"
           [disabled]="isLoading"
         >
           {{ isLoading ? ('auth.creating-account' | translate) : ('auth.register' | translate) }}
@@ -106,7 +106,7 @@ import { LanguageService } from '../../../core/language.service';
       </form>
 
       <div class="mt-4 text-center">
-        <p>{{ 'auth.already-have-account' | translate }} <a routerLink="/login" class="text-blue-600 hover:underline">{{ 'auth.log-in-link' | translate }}</a></p>
+        <p class="text-neutral/80">{{ 'auth.already-have-account' | translate }} <a routerLink="/login" class="link">{{ 'auth.log-in-link' | translate }}</a></p>
       </div>
     </div>
   `,

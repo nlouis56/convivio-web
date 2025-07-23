@@ -26,8 +26,8 @@ import { TranslatePipe } from '../../core/translate.pipe';
       <!-- Loading state -->
       <ng-container *ngIf="isLoading; else loadedContent">
         <div class="flex items-center justify-center py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-600"></div>
-          <span class="ml-3 text-gray-600">{{ 'info.loading' | translate }}</span>
+          <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-primary-600"></div>
+          <span class="ml-3 text-neutral/70">{{ 'info.loading' | translate }}</span>
         </div>
       </ng-container>
 
@@ -42,7 +42,7 @@ import { TranslatePipe } from '../../core/translate.pipe';
               <!-- Review header -->
               <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center">
-                  <p class="font-medium text-gray-800">
+                  <p class="font-medium text-neutral">
                     {{ review.user?.username || 'Anonymous' }}
                   </p>
                   <div class="flex items-center ml-3">
@@ -50,18 +50,18 @@ import { TranslatePipe } from '../../core/translate.pipe';
                       <span *ngFor="let star of getStarArray(review.rating)" class="text-lg">★</span>
                       <span *ngFor="let star of getEmptyStarArray(review.rating)" class="text-gray-300 text-lg">★</span>
                     </div>
-                    <span class="text-sm text-gray-500 ml-2">
+                    <span class="text-sm text-neutral/60 ml-2">
                       {{ review.rating }}/5
                     </span>
                   </div>
                 </div>
-                <span class="text-sm text-gray-500">
+                <span class="text-sm text-neutral/60">
                   {{ review.createdAt | date: 'short' }}
                 </span>
               </div>
               
               <!-- Review comment -->
-              <p class="text-gray-700 leading-relaxed">
+              <p class="text-neutral/80 leading-relaxed">
                 {{ review.comment }}
               </p>
             </div>
@@ -69,8 +69,8 @@ import { TranslatePipe } from '../../core/translate.pipe';
           
           <!-- Review stats -->
           <div class="mt-6 pt-4 border-t border-gray-200">
-            <div class="flex items-center justify-between text-sm text-gray-600">
-              <span>{{ 'misc.total-reviews' | translate }}: {{ reviews.length }}</span>
+            <div class="flex items-center justify-between text-sm text-neutral/70">
+              <span>{{ 'reviews.total-reviews' | translate }}: {{ reviews.length }}</span>
               <span *ngIf="averageRating > 0">
                 {{ 'places.average-rating' | translate }}: {{ averageRating.toFixed(1) }}/5
               </span>
@@ -81,18 +81,18 @@ import { TranslatePipe } from '../../core/translate.pipe';
         <!-- No reviews state -->
         <ng-template #noReviews>
           <div class="text-center py-8">
-            <p class="text-gray-500 mb-2">{{ 'reviews.no-reviews' | translate }}</p>
-            <p class="text-sm text-gray-400">{{ 'reviews.be-first-to-review' | translate }}</p>
+            <p class="text-neutral/60 mb-2">{{ 'reviews.no-reviews' | translate }}</p>
+            <p class="text-sm text-neutral/50">{{ 'reviews.be-first-to-review' | translate }}</p>
           </div>
         </ng-template>
       </ng-template>
 
       <!-- Error state -->
       <div *ngIf="hasError" class="text-center py-8">
-        <p class="text-red-500 mb-2">{{ 'reviews.error-loading-reviews' | translate }}</p>
+        <p class="text-error mb-2">{{ 'reviews.error-loading-reviews' | translate }}</p>
         <button 
           (click)="loadReviews()"
-          class="text-blue-600 hover:underline text-sm"
+          class="link text-sm"
         >
           {{ 'reviews.try-again' | translate }}
         </button>

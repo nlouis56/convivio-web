@@ -22,18 +22,18 @@ import { TranslatePipe } from "../../../core/translate.pipe";
   template: `
     <div class="max-w-5xl mx-auto">
       <!-- Heading -->
-      <h1 class="text-3xl font-bold mb-2">{{'misc.details' | translate}}</h1>
-      <p class="text-gray-600 mb-6">Place ID: {{ placeId }}</p>
+      <h1 class="text-3xl font-bold mb-2 text-neutral-800">{{'misc.details' | translate}}</h1>
+      <p class="text-neutral-600 mb-6">Place ID: {{ placeId }}</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Details card -->
-        <div class="bg-white shadow-md rounded-lg p-6">
+        <div class="card p-4">
           <ng-container *ngIf="placeDTO; else loading">
-            <h2 class="text-2xl font-semibold mb-2">
+            <h2 class="text-2xl font-semibold mb-2 text-neutral-800">
               {{ placeDTO.name }}
             </h2>
 
-            <p class="text-gray-700 mb-4">
+            <p class="text-neutral-700 mb-4">
               {{ placeDTO.description }}
             </p>
 
@@ -44,7 +44,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
             <div class="mb-4">
               <strong>{{'places.address' | translate}}: </strong> {{ placeDTO.address }}
               <button
-                class="ml-2 text-blue-600 hover:underline"
+                class="ml-2 link"
                 (click)="openGmaps(placeDTO)"
                 *ngIf="placeDTO"
               >
@@ -78,7 +78,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
           </ng-container>
 
           <ng-template #loading>
-            <p class="text-gray-500">{{'info.loading' | translate}}</p>
+            <p class="text-neutral-500">{{'info.loading' | translate}}</p>
           </ng-template>
         </div>
 
@@ -98,7 +98,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
       </div>
 
       <ng-template #noPlace>
-        <p class="text-red-500 mt-6">
+        <p class="text-error mt-6">
           {{'misc.no-data' | translate}}
         </p>
       </ng-template>
@@ -107,7 +107,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
       <div class="mt-8">
         <a
           routerLink="/places"
-          class="text-blue-600 hover:underline"
+          class="link"
           >← {{'places.back-to' | translate}}</a
         >
       </div>
@@ -117,7 +117,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
         <div class="fixed bottom-8 right-8">
           <a
             routerLink="/places/{{ placeId }}/edit"
-            class="flex items-center justify-center w-14 h-14 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700"
+            class="flex items-center justify-center w-14 h-14 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-colors"
           >
             <span class="text-2xl">✏️</span>
           </a>

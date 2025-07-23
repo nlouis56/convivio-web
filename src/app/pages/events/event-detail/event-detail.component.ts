@@ -16,8 +16,8 @@ import { TranslatePipe } from "../../../core/translate.pipe";
     <!-- Loading state -->
     <ng-container *ngIf="isLoading; else loadedTpl">
       <div class="flex flex-col items-center justify-center py-16">
-        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-        <span class="mt-4 text-gray-600">{{ 'events.loading-details' | translate }}</span>
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-primary-600"></div>
+        <span class="mt-4 text-neutral-600">{{ 'events.loading-details' | translate }}</span>
       </div>
     </ng-container>
 
@@ -27,32 +27,32 @@ import { TranslatePipe } from "../../../core/translate.pipe";
       <ng-container *ngIf="eventDetails; else notFoundTpl">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
           <div class="flex flex-col gap-6">
-            <div class="bg-white shadow-md rounded-lg p-6">
-              <h2 class="text-2xl font-bold mb-4">
+            <div class="card p-4">
+              <h2 class="text-2xl font-bold mb-4 text-neutral-800">
                 {{ 'misc.details' | translate }} - {{ eventDetails.title }}
               </h2>
-              <p class="text-gray-700 mb-2">
+              <p class="text-neutral-700 mb-2">
                 <strong>{{ 'events.date' | translate }}:</strong>
                 {{ eventDetails.startDateTime | date: 'fullDate' }}
               </p>
-              <p class="text-gray-700 mb-2">
+              <p class="text-neutral-700 mb-2">
                 <strong>{{ 'misc.location' | translate }}:</strong>
                 {{ eventDetails.place.address }}
               </p>
-              <p class="text-gray-700 mb-2">
+              <p class="text-neutral-700 mb-2">
                 <strong>{{ 'events.description-field' | translate }}:</strong>
                 {{ eventDetails.description }}
               </p>
             </div>
 
-            <div class="bg-white shadow-md rounded-lg p-6">
-              <h2 class="text-2xl font-bold mb-4">{{ 'events.participants' | translate }}</h2>
-              <p class="text-gray-700 mb-2">
+            <div class="card p-4">
+              <h2 class="text-2xl font-bold mb-4 text-neutral-800">{{ 'events.participants' | translate }}</h2>
+              <p class="text-neutral-700 mb-2">
                 <strong>{{ 'events.participants' | translate }}: </strong>
                 {{ eventDetails.participantCount ?? ('events.first-to-join' | translate) }}
               </p>
               <button
-                class="bg-blue-600 text-white px-4 py-2 mt-3 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="btn mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 (click)="toggleParticipation()"
                 [disabled]="isLoading"
               >
@@ -70,14 +70,14 @@ import { TranslatePipe } from "../../../core/translate.pipe";
 
         <!-- Reviews Section -->
         <div class="mt-8">
-          <app-review-list 
-            resourceType="event" 
+          <app-review-list
+            resourceType="event"
             [resourceId]="eventId">
           </app-review-list>
         </div>
 
         <div class="mt-6">
-          <a routerLink="/events" class="text-blue-600 hover:underline">
+          <a routerLink="/events" class="link">
             ← {{'events.back-to' | translate}}
           </a>
         </div>
@@ -85,7 +85,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
         <div *ngIf="isLoggedIn && hasCreatorRole" class="fixed bottom-8 right-8">
           <a
             [routerLink]="['/events', eventId, 'edit']"
-            class="flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700"
+            class="flex items-center justify-center w-14 h-14 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-colors"
           >
             <span class="text-2xl">✏️</span>
           </a>
@@ -95,8 +95,8 @@ import { TranslatePipe } from "../../../core/translate.pipe";
       <!-- Event not found -->
       <ng-template #notFoundTpl>
         <div class="text-center py-16">
-          <p class="text-red-500 mb-4">{{ 'events.not-found' | translate }}</p>
-          <a routerLink="/events" class="text-blue-600 hover:underline">
+          <p class="text-error mb-4">{{ 'events.not-found' | translate }}</p>
+          <a routerLink="/events" class="link">
             ← {{ 'events.back-to-events' | translate }}
           </a>
         </div>
@@ -105,6 +105,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
   `,
   styles: []
 })
+
 export class EventDetailComponent implements OnInit {
   eventId: string | null = null;
   eventDetails: Event | null = null;

@@ -14,16 +14,16 @@ import { TranslatePipe } from '../../core/translate.pipe';
     <!-- Only show if user is logged in and hasn't reviewed yet -->
     <div 
       *ngIf="shouldShowForm" 
-      class="bg-white shadow-md rounded-lg p-6 border-l-4 border-blue-500"
+      class="card border-l-4 border-primary-500 p-4"
     >
-      <h3 class="text-xl font-semibold mb-4">
+      <h3 class="text-xl font-semibold mb-4 text-neutral-800">
         {{ 'reviews.new' | translate }}
       </h3>
 
       <form (ngSubmit)="onSubmit()" #reviewForm="ngForm">
         <!-- Rating Selection -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-neutral-700 mb-2">
             {{ 'reviews.rating' | translate }} *
           </label>
           <div class="flex items-center space-x-1">
@@ -33,23 +33,23 @@ import { TranslatePipe } from '../../core/translate.pipe';
               (click)="setRating(star)"
               class="text-2xl transition-colors duration-200 focus:outline-none"
               [class.text-yellow-400]="star <= formData.rating"
-              [class.text-gray-300]="star > formData.rating"
+              [class.text-neutral-300]="star > formData.rating"
               [class.hover:text-yellow-300]="star > formData.rating"
             >
               ★
             </button>
-            <span class="ml-3 text-sm text-gray-600" *ngIf="formData.rating > 0">
+            <span class="ml-3 text-sm text-neutral-600" *ngIf="formData.rating > 0">
               {{ formData.rating }}/5
             </span>
           </div>
-          <div *ngIf="submitted && formData.rating === 0" class="text-red-500 text-sm mt-1">
+          <div *ngIf="submitted && formData.rating === 0" class="text-error text-sm mt-1">
             {{ 'reviews.rating-required' | translate }}
           </div>
         </div>
 
         <!-- Comment -->
         <div class="mb-4">
-          <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">
+          <label for="comment" class="block text-sm font-medium text-neutral-700 mb-2">
             {{ 'reviews.comment' | translate }} *
           </label>
           <textarea
@@ -58,11 +58,11 @@ import { TranslatePipe } from '../../core/translate.pipe';
             [(ngModel)]="formData.comment"
             required
             rows="4"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+            class="input resize-vertical"
             [placeholder]="'reviews.share-experience' | translate"
             #commentField="ngModel"
           ></textarea>
-          <div *ngIf="submitted && commentField.invalid" class="text-red-500 text-sm mt-1">
+          <div *ngIf="submitted && commentField.invalid" class="text-error text-sm mt-1">
             {{ 'reviews.comment-required' | translate }}
           </div>
         </div>
@@ -72,7 +72,7 @@ import { TranslatePipe } from '../../core/translate.pipe';
           <button
             type="submit"
             [disabled]="isSubmitting"
-            class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            class="btn disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span *ngIf="!isSubmitting">{{ 'reviews.submit' | translate }}</span>
             <span *ngIf="isSubmitting" class="flex items-center">
@@ -84,7 +84,7 @@ import { TranslatePipe } from '../../core/translate.pipe';
           <button
             type="button"
             (click)="resetForm()"
-            class="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors duration-200"
+            class="btn-ghost"
           >
             {{ 'reviews.cancel' | translate }}
           </button>
@@ -94,7 +94,7 @@ import { TranslatePipe } from '../../core/translate.pipe';
       <!-- Success Message -->
       <div 
         *ngIf="showSuccessMessage" 
-        class="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md"
+        class="mt-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-md"
       >
         {{ 'reviews.review-submitted-successfully' | translate }}
       </div>
@@ -102,7 +102,7 @@ import { TranslatePipe } from '../../core/translate.pipe';
       <!-- Error Message -->
       <div 
         *ngIf="errorMessage" 
-        class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md"
+        class="mt-4 p-3 bg-danger-alert border border-accent-200 text-neutral-700 rounded-md"
       >
         {{ errorMessage }}
       </div>

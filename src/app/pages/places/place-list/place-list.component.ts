@@ -13,8 +13,8 @@ import { TranslatePipe } from "../../../core/translate.pipe";
   imports: [CommonModule, RouterModule, FormsModule, TranslatePipe],
   template: `
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">{{'nav.places' | translate}}</h1>
-      <p class="text-gray-600">{{'places.description' | translate}}</p>
+      <h1 class="text-3xl font-bold mb-2 text-neutral">{{'nav.places' | translate}}</h1>
+      <p class="text-neutral/70">{{'places.description' | translate}}</p>
     </div>
 
     <div class="mb-8 flex flex-wrap gap-4">
@@ -22,12 +22,13 @@ import { TranslatePipe } from "../../../core/translate.pipe";
         *ngFor="let filter of filters"
         (click)="applyFilter(filter.value)"
         [disabled]="isLoading"
-        class="px-4 py-2 rounded-full transition"
+        class="px-4 py-2 rounded-full transition-colors"
         [class.cursor-not-allowed]="isLoading"
         [class.opacity-50]="isLoading"
-        [class.bg-green-600]="currentFilter === filter.value"
+        [class.bg-accent-600]="currentFilter === filter.value"
         [class.text-white]="currentFilter === filter.value"
         [class.bg-gray-200]="currentFilter !== filter.value"
+        [class.text-neutral]="currentFilter !== filter.value"
       >
         {{ filter.label | translate }}
       </button>
@@ -35,8 +36,8 @@ import { TranslatePipe } from "../../../core/translate.pipe";
 
     <!-- Loading indicator -->
     <div *ngIf="isLoading" class="flex justify-center items-center py-16">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-green-600"></div>
-      <span class="ml-4 text-gray-600">{{ 'info.loading' | translate }}</span>
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-primary-600"></div>
+      <span class="ml-4 text-neutral/70">{{ 'info.loading' | translate }}</span>
     </div>
 
     <!-- Once loading is done, show either the grid or "no places" -->
@@ -44,7 +45,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
       <div *ngIf="places.length > 0; else noPlacesTpl"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <ng-container *ngFor="let place of places; trackBy: trackById">
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="card overflow-hidden">
             <ng-container *ngIf="place.photoUrls.length; else noImageTpl">
               <img [src]="place.photoUrls[0]"
                     [alt]="place.name"
@@ -52,29 +53,29 @@ import { TranslatePipe } from "../../../core/translate.pipe";
             </ng-container>
             <ng-template #noImageTpl>
               <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
-                <span class="text-gray-500">{{ 'places.no-image' | translate }}</span>
+                <span class="text-neutral/60">{{ 'places.no-image' | translate }}</span>
               </div>
             </ng-template>
 
             <div class="p-4">
-              <h3 class="text-xl font-semibold mb-2">{{ place.name }}</h3>
+              <h3 class="text-xl font-semibold mb-2 text-neutral">{{ place.name }}</h3>
               <div class="flex items-center mb-2">
-                <span class="bg-gray-200 text-gray-700 text-sm px-2 py-1 rounded">
+                <span class="bg-surface text-neutral text-sm px-2 py-1 rounded border border-gray-200">
                   {{ place.category }}
                 </span>
                 <div *ngIf="place.averageRating" class="ml-auto flex items-center">
                   <span class="text-yellow-500">★</span>
-                  <span class="ml-1">{{ place.averageRating.toFixed(1) }}</span>
+                  <span class="ml-1 text-neutral">{{ place.averageRating.toFixed(1) }}</span>
                 </div>
               </div>
-              <p class="text-gray-600 mb-2">{{ place.address }}</p>
-              <p class="mb-4">
+              <p class="text-neutral/70 mb-2">{{ place.address }}</p>
+              <p class="mb-4 text-neutral/80">
                 {{ place.description | slice:0:100 }}
                 {{ place.description.length > 100 ? '…' : '' }}
               </p>
               <div class="flex justify-between items-center mt-4">
                 <button [routerLink]="['/places', place.id]"
-                        class="px-4 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        class="btn-accent">
                   {{ 'misc.view-details' | translate }}
                 </button>
               </div>
@@ -89,10 +90,10 @@ import { TranslatePipe } from "../../../core/translate.pipe";
 
     <ng-template #noPlacesTpl>
       <div class="col-span-full text-center py-10">
-        <p class="text-gray-500 mb-4">{{ 'places.no-places' | translate }}</p>
+        <p class="text-neutral/60 mb-4">{{ 'places.no-places' | translate }}</p>
         <button *ngIf="isLoggedIn && hasCreatorRole"
                 [routerLink]="['/places/create']"
-                class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                class="btn-accent">
           {{ 'places.add-place' | translate }}
         </button>
       </div>
@@ -101,7 +102,7 @@ import { TranslatePipe } from "../../../core/translate.pipe";
     <ng-container *ngIf="isLoggedIn && hasCreatorRole">
       <div class="fixed bottom-8 right-8">
         <button [routerLink]="['/places/create']"
-                class="flex items-center justify-center w-14 h-14 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-colors">
+                class="flex items-center justify-center w-14 h-14 bg-accent-600 text-white rounded-full shadow-lg hover:bg-accent-700 transition-colors">
           <span class="text-2xl">+</span>
         </button>
       </div>
