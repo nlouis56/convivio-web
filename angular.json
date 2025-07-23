@@ -21,7 +21,7 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
+              "src/favicon.svg",
               "src/assets/**",
               {
                 "glob": "**/*",
@@ -34,7 +34,8 @@
               "src/styles.css"
             ],
             "loader": {
-              ".png": "binary"
+              ".png": "binary",
+              ".svg": "text"
             },
             "scripts": [],
             "server": "src/main.server.ts",
@@ -94,7 +95,7 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              "src/favicon.ico",
+              "src/favicon.svg",
               "src/assets/**",
               {
                 "glob": "**/*",
